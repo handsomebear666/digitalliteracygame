@@ -142,7 +142,53 @@ export const useGameStore = () => {
         }
     };
 
-    return { state, playSound, triggerHint, pushMessage, playScript, hideMessageByKeyword, showResult };
+    // 🚀 真·预加载引擎：提取并下载所有资源
+    const preloadAssets = () => {
+        return new Promise((resolve) => {
+            let urls = [];
+            // 递归提取 ASSETS 里的所有图片路径
+            const extractUrls = (obj) => {
+                for (let key in obj) {
+                    // 只提取字符串，并且排除掉音频文件
+                    if (typeof obj[key] === "string" && !obj[key].endsWith(".mp3")) {
+                        urls.push(obj[key]);
+                    } else if (typeof obj[key] === "object") {
+                        extractUrls(obj[key]);
+                    }
+                }
+            };
+            extractUrls(ASSETS);
+
+            // 强制浏览器开始缓冲音频
+            Object.values(audioCtx).forEach(audio => {
+                // 轻轻推一下，让浏览器提前下载音频流
+                audio.load(); 
+            });
+
+            if (urls.length === 0) {
+                resolve();
+                return;
+            }
+
+            let loadedCount = 0;
+            urls.forEach((url) => {
+                const img = new Image();
+                // 无论加载成功还是报错（比如某张图丢了），都往下走，绝不死卡加载页
+                img.onload = img.onerror = () => {
+                    loadedCount++;
+                    if (loadedCount === urls.length) {
+                        resolve(); // 所有图片都过了一遍，正式放行！
+                    }
+                };
+                img.src = url;
+            });
+        });
+    };
+
+    return { 
+        state, playSound, triggerHint, pushMessage, playScript, 
+        hideMessageByKeyword, showResult, preloadAssets 
+    };
 };
 
 // 单例模式抛出

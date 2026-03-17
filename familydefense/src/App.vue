@@ -61,8 +61,14 @@ watch(() => store.state.messages.length, () => {
   nextTick(() => { if (chatBox.value) chatBox.value.scrollTop = chatBox.value.scrollHeight; });
 });
 
-onMounted(() => {
-  setTimeout(() => { store.state.activeOverlay = 'intro'; }, 800);
+onMounted(async () => {
+  // 1. 此时界面显示的是 LoadingScreen 动画
+  
+  // 2. 挂起等待，直到所有图片和音频从服务器下载完毕
+  await store.preloadAssets(); 
+  
+  // 3. 资源准备就绪，撤掉加载界面，露出开场白弹窗！
+  store.state.activeOverlay = 'intro'; 
 });
 
 // 暴露全局函数供聊天消息中的 onclick 调用
