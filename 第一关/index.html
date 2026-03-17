@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>相亲相爱一家人</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <div class="system-overlay" id="missionOverlay" style="display: none">
+        <div class="mission-box">
+          <div class="scan-line"></div>
+
+          <div class="warning-text" id="typedText"></div>
+          <button
+            class="start-btn"
+            id="startBtn"
+            onclick="startGame()"
+            style="opacity: 0; pointer-events: none"
+          >
+            我准备好了！
+          </button>
+        </div>
+      </div>
+
+      <div class="inspector-overlay" id="imageInspector" style="display: none">
+        <div class="inspector-close" onclick="closeInspector()">返回聊天</div>
+
+        <div class="inspector-img-box" id="inspectorBox">
+          <img src="" id="inspectorImg" />
+
+          <div
+            class="flaw-hotspot"
+            id="flaw-mountain"
+            style="top: 1%; left: 10%; width: 40%; height: 25%"
+            onclick="revealFlaw('mountain')"
+          ></div>
+
+          <div
+            class="flaw-hotspot"
+            id="flaw-billboard"
+            style="top: 35%; left: 1%; width: 40%; height: 40%"
+            onclick="revealFlaw('billboard')"
+          ></div>
+
+          <div
+            class="flaw-hotspot"
+            id="flaw-ai"
+            style="top: 90%; left: 87%; width: 13%; height: 10%"
+            onclick="revealFlaw('ai')"
+          ></div>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div id="clock">09:41</div>
+        <div class="status-right">
+          <img id="signal" class="icon-img" />
+          <img id="wifi" class="icon-img" />
+          <img id="battery" class="icon-img" />
+        </div>
+      </div>
+
+      <div class="wechat-header">
+        <div class="back-btn"><img id="back" class="icon-img" /></div>
+        <div id="groupName">相亲相爱一家人 (27)</div>
+        <div class="more-btn"><img id="more" class="icon-img" /></div>
+      </div>
+      <div id="systemToast" class="system-hint-toast">
+        <span class="hint-icon">💡</span>
+        <span id="toastText"></span>
+      </div>
+
+      <div class="drawer-overlay" id="drawerOverlay"></div>
+      <div class="chat-container" id="chatBox"></div>
+      <div class="game-action-area" id="actionArea"></div>
+
+      <div class="wechat-bottom">
+        <img id="voice_icon" class="bottom-icon" />
+        <div class="input-wrapper">
+          <input type="text" class="input-box" disabled placeholder=" " />
+          <div
+            id="inlineHintBtn"
+            class="inline-hint-btn"
+            onclick="triggerCurrentHint()"
+            style="display: none"
+          >
+            💡 提示
+          </div>
+        </div>
+        <img id="emoji_icon" class="bottom-icon" />
+        <img id="plus_icon" class="bottom-icon" />
+      </div>
+    </div>
+
+    <script src="story.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
