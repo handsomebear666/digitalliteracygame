@@ -41,7 +41,9 @@ body,
 html {
   margin: 0;
   padding: 0;
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family:
+    "PingFang SC", "Microsoft YaHei", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   background-color: #e0f7fa;
   color: #333;
 }
