@@ -2,13 +2,28 @@
   <div class="island-node" :class="game.status">
     <div class="island-card">
       <div class="island-number">{{ index + 1 }}</div>
-      <div class="island-icon">{{ game.icon }}</div>
 
-      <h3>{{ game.title }}</h3>
-      <p class="meta" v-if="game.time">⏱️ {{ game.time }}</p>
+      <div class="island-icon-img" v-if="game.iconImg">
+        <img :src="game.iconImg" alt="icon" />
+      </div>
+      <div class="island-icon" v-else>{{ game.icon }}</div>
+
+      <div class="island-title-img" v-if="game.titleImg">
+        <img :src="game.titleImg" alt="title" />
+      </div>
+      <h3 v-else>{{ game.title }}</h3>
+
+      <p class="meta" v-if="!game.comingSoon && game.time">
+        ⏱️ {{ game.time }}
+      </p>
 
       <div
-        v-if="game.status !== 'locked' && game.tags && game.tags.length > 0"
+        v-if="
+          !game.comingSoon &&
+          game.status !== 'locked' &&
+          game.tags &&
+          game.tags.length > 0
+        "
         class="tag-group"
       >
         <span
@@ -23,7 +38,11 @@
 
       <p class="desc">{{ game.desc }}</p>
 
-      <div class="button-group">
+      <div class="button-group single-btn" v-if="game.comingSoon">
+        <button class="start-btn locked-only-btn" disabled>尚未解锁</button>
+      </div>
+
+      <div class="button-group" v-else>
         <button
           class="start-btn"
           :disabled="game.status === 'locked'"
@@ -31,10 +50,9 @@
         >
           {{ buttonText }}
         </button>
-
         <button
           class="card-btn"
-          :disabled="game.status === 'locked'"
+          :disabled="game.status === 'locked' || !game.cards.length"
           @click="$emit('show-cards', index)"
         >
           🎴 卡片知识
@@ -54,7 +72,6 @@ const props = defineProps({
 
 const emit = defineEmits(["play-game", "show-cards"]);
 
-// 动态计算开始按钮文本 (修复通关后不显示“再次挑战”的问题)
 const buttonText = computed(() => {
   if (props.game.status === "locked") return "尚未解锁";
   if (props.game.status === "completed") return "再次挑战";
@@ -69,7 +86,6 @@ const handleAction = () => {
 </script>
 
 <style scoped>
-/* 基础岛屿样式 */
 .island-node {
   display: flex;
   align-items: center;
@@ -112,10 +128,35 @@ const handleAction = () => {
 .island-node:nth-child(even) .island-number {
   right: -20px;
 }
+
+/* 💥 新增：支持图片图标和标题的样式 */
+.island-icon-img {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.island-icon-img img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+}
 .island-icon {
   font-size: 40px;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.island-title-img {
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.island-title-img img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
 }
 .island-card h3 {
   margin: 0 0 10px 0;
@@ -123,20 +164,24 @@ const handleAction = () => {
   font-size: 20px;
   text-align: center;
 }
+
 .island-card p.meta {
   font-size: 12px;
   color: #888;
-  margin: 0 0 15px 0;
+  margin: 0 0 10px 0;
   text-align: center;
 }
+
+/* 💥 简介：文字居中，且 white-space 保证换行符生效 */
 .island-card p.desc {
   font-size: 14px;
   color: #666;
   line-height: 1.6;
   margin: 0 0 20px 0;
+  text-align: center;
+  white-space: pre-wrap;
 }
 
-/* 💥 找回丢失的彩色气泡标签样式 */
 .tag-group {
   display: flex;
   gap: 8px;
@@ -167,7 +212,6 @@ const handleAction = () => {
   color: #c2185b;
 }
 
-/* 按钮组样式 */
 .button-group {
   display: flex;
   gap: 10px;
@@ -199,7 +243,17 @@ const handleAction = () => {
   background-color: #ff8f00;
 }
 
-/* 状态样式 */
+/* 💥 敬请期待的单按钮样式 */
+.button-group.single-btn {
+  justify-content: center;
+}
+.locked-only-btn {
+  background-color: #b0bec5 !important;
+  cursor: not-allowed !important;
+  width: 100%;
+  flex: none;
+}
+
 .island-node.active .island-card {
   border-color: #4db6ac;
   cursor: pointer;
@@ -221,7 +275,6 @@ const handleAction = () => {
   background-color: #b0bec5;
 }
 
-/* 已通关状态 ✅真相大白盖章 */
 .island-node.completed .island-card::after {
   content: "✅ 真相大白";
   position: absolute;

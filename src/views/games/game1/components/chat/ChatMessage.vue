@@ -88,5 +88,118 @@ const handleContentClick = (e) => {
 </script>
 
 <style scoped>
-/* 这里保留你原本写在这个文件里的 CSS 样式即可 */
+.sys-msg {
+  text-align: center;
+  font-size: 12px;
+  color: #fff;
+}
+.sys-msg span {
+  background-color: #dadada;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.msg-row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background-color: #ccc;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.msg-content {
+  max-width: 68%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.msg-left {
+  justify-content: flex-start;
+}
+.msg-left .avatar {
+  margin-right: 12px;
+  background-color: #e5cd9e;
+}
+.msg-left .msg-content {
+  background-color: #fff;
+}
+.msg-left .msg-content::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 14px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 10px solid #fff;
+}
+
+.msg-right {
+  justify-content: flex-end;
+}
+.msg-right .avatar {
+  margin-left: 12px;
+  background-color: #576b95;
+}
+.msg-right .msg-content {
+  background-color: #95ec69;
+}
+.msg-right .msg-content::before {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 14px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid #95ec69;
+}
+
+.msg-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 68%;
+}
+.msg-left .msg-content {
+  max-width: 100%;
+}
+
+.msg-name {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 2px;
+  margin-left: 4px;
+}
+
+.msg-image {
+  max-width: 200px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+}
+
+.msg-content.no-tail::before {
+  display: none !important;
+}
+.msg-content.no-tail {
+  background-color: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
 </style>

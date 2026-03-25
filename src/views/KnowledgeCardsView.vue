@@ -49,7 +49,7 @@
             </div>
             <h2 class="card-title">{{ card.title }}</h2>
             <div class="card-divider"></div>
-            <p class="card-content" @touchstart.stop>{{ card.content }}</p>
+            <p class="card-content">{{ card.content }}</p>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ const currentIndex = ref(0);
 
 // --- 手机手势滑动检测逻辑 ---
 let touchStartY = 0;
-const SWIPE_THRESHOLD = 50;
+const SWIPE_THRESHOLD = 15;
 
 const goBack = () => router.push("/");
 

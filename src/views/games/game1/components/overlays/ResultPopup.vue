@@ -60,16 +60,13 @@
 </template>
 
 <script setup>
-// 接收外部传来的结果数据
 defineProps({
   resultData: { type: Object, required: true },
 });
-// 统一向外发送 action 动作
 defineEmits(["action"]);
 </script>
 
 <style scoped>
-/* 弹窗遮罩 */
 .result-popup-overlay {
   position: absolute;
   top: 0;
@@ -85,7 +82,6 @@ defineEmits(["action"]);
   -webkit-backdrop-filter: blur(5px);
 }
 
-/* 卡片主体 */
 .result-popup-card {
   width: 85%;
   max-width: 320px;
@@ -119,7 +115,6 @@ defineEmits(["action"]);
   padding: 35px 20px 30px;
 }
 
-/* --- 成功状态专属样式 --- */
 .success-header {
   display: flex;
   flex-direction: column;
@@ -144,7 +139,6 @@ defineEmits(["action"]);
   margin-bottom: 30px;
 }
 
-/* --- 失败状态专属样式 --- */
 .fail-header {
   display: flex;
   flex-direction: column;
@@ -195,7 +189,6 @@ defineEmits(["action"]);
   }
 }
 
-/* --- 按钮通用样式 --- */
 .controls-group {
   display: flex;
   flex-direction: column;
@@ -216,7 +209,6 @@ defineEmits(["action"]);
   box-sizing: border-box;
 }
 
-/* 成功状态按钮 */
 .card-btn {
   background-color: #ffb300;
   box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3);
@@ -234,7 +226,6 @@ defineEmits(["action"]);
   transform: translateY(-2px);
 }
 
-/* 失败状态按钮 */
 .retry-fail-btn {
   background-color: #ff453a;
   box-shadow: 0 4px 10px rgba(255, 69, 58, 0.3);

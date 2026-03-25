@@ -1,57 +1,59 @@
 <template>
-  <div id="app-container" class="game1-root">
-    <LoadingScreen v-if="store.state.activeOverlay === 'loading'" />
-    <ResultPopup
-      v-if="store.state.activeOverlay === 'result'"
-      :resultData="store.state.resultData"
-      @action="handleResultAction"
-    />
-
-    <WechatHeader
-      :show="
-        store.state.activeOverlay !== 'intro' &&
-        store.state.activeOverlay !== 'loading'
-      "
-      :groupName="store.state.groupName"
-    />
-
-    <div
-      class="chat-container"
-      ref="chatBox"
-      v-show="
-        store.state.activeOverlay !== 'intro' &&
-        store.state.activeOverlay !== 'loading'
-      "
-    >
-      <ChatMessage
-        v-for="msg in store.state.messages"
-        :key="msg.id"
-        :message="msg"
-        @image-click="handleImageClick"
-        @link-click="handleLinkClick"
+  <div class="game1-fullscreen-wrapper">
+    <div class="game1-app-container">
+      <LoadingScreen v-if="store.state.activeOverlay === 'loading'" />
+      <ResultPopup
+        v-if="store.state.activeOverlay === 'result'"
+        :resultData="store.state.resultData"
+        @action="handleResultAction"
       />
+
+      <WechatHeader
+        :show="
+          store.state.activeOverlay !== 'intro' &&
+          store.state.activeOverlay !== 'loading'
+        "
+        :groupName="store.state.groupName"
+      />
+
+      <div
+        class="chat-container"
+        ref="chatBox"
+        v-show="
+          store.state.activeOverlay !== 'intro' &&
+          store.state.activeOverlay !== 'loading'
+        "
+      >
+        <ChatMessage
+          v-for="msg in store.state.messages"
+          :key="msg.id"
+          :message="msg"
+          @image-click="handleImageClick"
+          @link-click="handleLinkClick"
+        />
+      </div>
+
+      <ActionDrawer
+        :title="drawerConfig.title"
+        :options="drawerConfig.options"
+        @select="handleChoice"
+      />
+      <WechatBottom
+        :show="
+          store.state.activeOverlay !== 'intro' &&
+          store.state.activeOverlay !== 'loading'
+        "
+      />
+      <SystemToast />
+
+      <ImageInspector
+        :imgSrc="currentInspectImage"
+        :showHotspots="currentInspectImage === monsterImg"
+        @completed="handleLevelCompleted(1)"
+      />
+      <FakeTaobao @completed="handleLevelCompleted(2)" />
+      <FakeFaceTime @completed="handleLevelCompleted(3)" />
     </div>
-
-    <ActionDrawer
-      :title="drawerConfig.title"
-      :options="drawerConfig.options"
-      @select="handleChoice"
-    />
-    <WechatBottom
-      :show="
-        store.state.activeOverlay !== 'intro' &&
-        store.state.activeOverlay !== 'loading'
-      "
-    />
-    <SystemToast />
-
-    <ImageInspector
-      :imgSrc="currentInspectImage"
-      :showHotspots="currentInspectImage === monsterImg"
-      @completed="handleLevelCompleted(1)"
-    />
-    <FakeTaobao @completed="handleLevelCompleted(2)" />
-    <FakeFaceTime @completed="handleLevelCompleted(3)" />
   </div>
 </template>
 
@@ -106,10 +108,6 @@ onMounted(() => {
     return;
   }
   sessionStorage.removeItem("fromHome");
-
-  styleElement = document.createElement("style");
-  styleElement.textContent = game1Style;
-  document.head.appendChild(styleElement);
 
   startGame();
 });
@@ -229,3 +227,65 @@ const handleResultAction = (action) => {
   }
 };
 </script>
+<style scoped>
+/* =========================================
+   新增：解决 padding 撑爆布局的核心代码
+   ========================================= */
+* {
+  box-sizing: border-box;
+}
+
+/* 1. 强制全屏容器，彻底隔离父级样式 */
+.game1-fullscreen-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #333; /* 电脑端显示时的外部黑底 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 确保游戏在最上层 */
+}
+
+/* 2. 手机尺寸的模拟器 (确保这个 class 名字和 template 里一样) */
+.game1-app-container {
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  background-color: #ededed; /* 恢复微信正常的浅灰底色 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. 在真正的手机上时，取消外围黑边和阴影 */
+@media screen and (max-width: 1024px) {
+  .game1-fullscreen-wrapper {
+    background-color: #ededed;
+  }
+  .game1-app-container {
+    max-width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* 聊天内容区 */
+.chat-container {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.chat-container::-webkit-scrollbar {
+  display: none;
+}
+</style>

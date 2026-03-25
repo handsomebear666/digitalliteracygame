@@ -137,3 +137,31 @@ const handleHintLogic = () => {
   }
 };
 </script>
+
+<style scoped>
+.wx-floating-btn {
+  position: absolute;
+  top: 550px;
+  right: 10px;
+  height: 36px;
+  padding: 0 14px 0 10px;
+  background-color: rgba(0, 0, 0, 0.45);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: grab;
+  backdrop-filter: blur(4px);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.wx-floating-btn:active {
+  cursor: grabbing;
+}
+</style>

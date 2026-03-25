@@ -87,7 +87,6 @@ const reveal = (key, hint) => {
   flaws.value[key] = true;
   store.triggerHint(hint, 1500);
 
-  // 只计算 3 个破绽字段（不包括 isOpen）
   const foundCount = ["url", "countdown", "password"].filter(
     (k) => flaws.value[k] === true,
   ).length;
@@ -104,7 +103,6 @@ const close = () => {
   store.state.activeOverlay = "none";
 };
 
-// 监听消息列表，如果淘宝链接消息被撤回，则关闭界面
 watch(
   () => store.state.messages,
   (messages) => {
@@ -122,3 +120,145 @@ watch(
   { deep: true },
 );
 </script>
+
+<style scoped>
+.taobao-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpFull 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideUpFull {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.taobao-header {
+  height: 50px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.taobao-close {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.fake-url {
+  font-size: 13px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 6px 15px;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.taobao-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 30px;
+}
+
+.product-info {
+  background: #fff;
+  padding: 15px;
+}
+.price-tag {
+  color: #ff5000;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.countdown-box {
+  background: linear-gradient(90deg, #ff5000, #ff8c00);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.fake-form {
+  background: #fff;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 8px;
+}
+.form-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  background: #f9f9f9;
+  font-size: 14px;
+}
+
+.danger-input-wrapper {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.danger-input {
+  border-color: #ffcccc;
+  color: #ff4444;
+  pointer-events: none;
+}
+.danger-input::placeholder {
+  color: #ff9999;
+}
+
+.fake-submit-btn {
+  width: 100%;
+  background: #ff5000;
+  color: white;
+  border: none;
+  height: 45px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.taobao-flaw-revealed {
+  border: 2px solid #ff4444 !important;
+  background-color: rgba(255, 68, 68, 0.1) !important;
+  animation: pulseBorder 1.5s infinite;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+  }
+}
+</style>

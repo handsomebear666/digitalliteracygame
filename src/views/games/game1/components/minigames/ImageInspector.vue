@@ -26,7 +26,7 @@ import { gameStore as store } from "../../store/gameStore.js";
 
 const props = defineProps({
   imgSrc: String,
-  showHotspots: { type: Boolean, default: false }, // 新增
+  showHotspots: { type: Boolean, default: false },
 });
 const emit = defineEmits(["completed"]);
 
@@ -54,7 +54,6 @@ const reveal = (key, hint) => {
   flaws.value[key] = true;
   store.triggerHint(hint, 1500);
 
-  // 只计算 3 个破绽字段（不包括 isOpen）
   const foundCount = ["mountain", "billboard", "ai"].filter(
     (k) => flaws.value[k] === true,
   ).length;
@@ -70,11 +69,9 @@ const close = () => {
   store.state.activeOverlay = "none";
 };
 
-// 监听消息列表，如果当前图片被隐藏，则关闭界面
 watch(
   () => store.state.messages,
   (messages) => {
-    // 只在图片查看界面打开时执行
     if (store.state.activeOverlay !== "inspector") return;
     const currentImgSrc = props.imgSrc;
     const isHidden = messages.some(
@@ -90,3 +87,70 @@ watch(
   { deep: true },
 );
 </script>
+
+<style scoped>
+.inspector-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.inspector-close {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #fff;
+  font-size: 15px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.inspector-img-box {
+  position: relative;
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.inspector-img-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.flaw-hotspot {
+  position: absolute;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.flaw-hotspot.revealed {
+  border: 3px solid #ff4444;
+  background: rgba(255, 68, 68, 0.2);
+  animation: pulseBorder 1.5s infinite;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+  }
+}
+</style>
