@@ -10,8 +10,8 @@
 
 <script setup>
 import { computed } from "vue";
-import { useGameStore } from "@game2/store/useGameStore";
-import phoneIcon from "@game2/assets/img/phone_icon.svg";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import phoneIcon from "@/views/games/game2/assets/img/phone_icon.svg";
 
 const store = useGameStore();
 

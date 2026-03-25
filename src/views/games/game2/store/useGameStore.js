@@ -1,11 +1,17 @@
 // src/store/useGameStore.js
 import { defineStore } from "pinia";
-import { GAME_STORY, DEBUNK_MESSAGES, ASSETS } from "@game2/data/story";
+import {
+  GAME_STORY,
+  DEBUNK_MESSAGES,
+  ASSETS,
+} from "@/views/games/game2/data/story";
+
 let bgmInstance = null;
+let timers = [];
 
 export const useGameStore = defineStore("game", {
   state: () => ({
-    hasStarted: false, // 【新增】标记游戏是否已经点击了开始
+    hasStarted: true, // 【新增】标记游戏是否已经点击了开始
 
     // 1. 游戏主进度
     gameLevel: 1,
@@ -34,6 +40,41 @@ export const useGameStore = defineStore("game", {
   }),
 
   actions: {
+    // 添加 setGameTimeout 方法，自动管理定时器
+    setGameTimeout(callback, delay) {
+      const id = store.setGameTimeout(() => {
+        callback();
+        const index = timers.indexOf(id);
+        if (index !== -1) timers.splice(index, 1);
+      }, delay);
+      timers.push(id);
+      return id;
+    },
+    clearAllTimers() {
+      timers.forEach((timer) => clearTimeout(timer));
+      timers = [];
+    },
+    stopAllAudio() {
+      if (bgmInstance) {
+        bgmInstance.pause();
+        bgmInstance.currentTime = 0;
+      }
+      // 如果有其他音频实例，也要停止
+    },
+    tryPlayBGM() {
+      if (!bgmInstance) {
+        bgmInstance = new Audio(ASSETS.AUDIO.bgm);
+        bgmInstance.loop = true;
+      }
+      if (bgmInstance.paused) {
+        bgmInstance.play().catch(() => {});
+      }
+    },
+    playClickAudio() {
+      const clickAudio = new Audio(ASSETS.AUDIO.click);
+      clickAudio.play().catch(() => {});
+      this.tryPlayBGM();
+    },
     // 【新增】开始游戏的方法
     startGame() {
       this.hasStarted = true;
@@ -84,7 +125,7 @@ export const useGameStore = defineStore("game", {
       } else if (this.gameLevel === 2) {
         if (!this.level2Solved) {
           this.activePhonePage = "welfare";
-          setTimeout(() => {
+          store.setGameTimeout(() => {
             this.showSmsPopup = true;
           }, 1000);
         } else {
@@ -113,7 +154,7 @@ export const useGameStore = defineStore("game", {
       this.toastMsg = text;
       this.toastBgColor = isDanger ? "#ff4d4f" : "#07c160";
       // 自动清除
-      setTimeout(() => {
+      store.setGameTimeout(() => {
         if (this.toastMsg === text) this.toastMsg = "";
       }, 2000);
     },
@@ -127,11 +168,11 @@ export const useGameStore = defineStore("game", {
 
       // 自动收网逻辑
       if (this.foundFlawsL1.length === 3) {
-        setTimeout(
+        store.setGameTimeout(
           () => this.showToast("🎉 证据收集完毕！正在切回聊天..."),
           1500,
         );
-        setTimeout(() => {
+        store.setGameTimeout(() => {
           this.returnToDialogue();
           this.nextLine(6); // 切回后触发第6句对话
         }, 3500);
@@ -144,15 +185,15 @@ export const useGameStore = defineStore("game", {
 
       this.level2Solved = true;
       this.isShaking = true;
-      setTimeout(() => {
+      store.setGameTimeout(() => {
         this.isShaking = false;
       }, 500);
 
       this.showToast("🚨 这是在修改妈妈的支付密码！", true);
 
-      setTimeout(() => {
+      store.setGameTimeout(() => {
         this.showSmsPopup = false;
-        setTimeout(() => {
+        store.setGameTimeout(() => {
           this.returnToDialogue();
           this.nextLine(10);
         }, 500);
@@ -176,7 +217,7 @@ export const useGameStore = defineStore("game", {
 
         // 第三关自动收网
         if (this.foundFlawsL3.length === 4) {
-          setTimeout(() => {
+          store.setGameTimeout(() => {
             this.returnToDialogue();
             this.nextLine(14);
           }, 2500);
@@ -187,7 +228,7 @@ export const useGameStore = defineStore("game", {
     doReport() {
       this.showActionSheet = false;
       this.showToast("✅ 投诉提交成功！微信安全中心已介入！");
-      setTimeout(() => {
+      store.setGameTimeout(() => {
         this.showPhoneSystem = false;
         this.showHintBtn = false;
         this.showEndScreen = true; // 触发通关结算

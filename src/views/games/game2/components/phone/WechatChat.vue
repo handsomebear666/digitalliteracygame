@@ -55,14 +55,14 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import { GAME_STORY, ASSETS } from "@game2/data/story";
-import iconBack from "@game2/assets/img/icon_back.svg";
-import iconDots from "@game2/assets/img/icon_dots.svg";
-import oaIcon from "@game2/assets/img/oa_icon.png";
-import iconVoice from "@game2/assets/img/icon_voice.svg";
-import iconEmoji from "@game2/assets/img/icon_emoji.svg";
-import iconPlus from "@game2/assets/img/icon_plus.svg";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
+import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
+import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
+import oaIcon from "@/views/games/game2/assets/img/oa_icon.png";
+import iconVoice from "@/views/games/game2/assets/img/icon_voice.svg";
+import iconEmoji from "@/views/games/game2/assets/img/icon_emoji.svg";
+import iconPlus from "@/views/games/game2/assets/img/icon_plus.svg";
 
 const store = useGameStore();
 

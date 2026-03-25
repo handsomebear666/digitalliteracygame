@@ -23,7 +23,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useGameStore } from "@game2/store/useGameStore";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
 
 const store = useGameStore();
 const isExpanded = ref(false);

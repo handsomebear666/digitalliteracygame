@@ -42,8 +42,8 @@
 
 <script setup>
 import { ref, computed, watch, nextTick } from "vue";
-import { useGameStore } from "@game2/store/useGameStore";
-import { GAME_STORY } from "@game2/data/story";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import { GAME_STORY } from "@/views/games/game2/data/story";
 
 const store = useGameStore();
 const textEl = ref(null);

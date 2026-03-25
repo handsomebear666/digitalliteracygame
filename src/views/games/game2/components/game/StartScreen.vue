@@ -26,8 +26,8 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import titleLogo from "@game2/assets/img/title_logo.png";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import titleLogo from "@/views/games/game2/assets/img/title_logo.png";
 const store = useGameStore();
 
 const handleStart = () => {

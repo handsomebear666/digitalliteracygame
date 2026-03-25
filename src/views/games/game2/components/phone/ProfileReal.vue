@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import iconBack from "@game2/assets/img/icon_back.svg";
-import auntZhangImg from "@game2/assets/img/aunt_zhang.png";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
+import auntZhangImg from "@/views/games/game2/assets/img/aunt_zhang.png";
 const store = useGameStore();
 </script>

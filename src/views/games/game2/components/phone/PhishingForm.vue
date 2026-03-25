@@ -56,8 +56,8 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import iconClose from "@game2/assets/img/icon_close.svg";
-import iconDots from "@game2/assets/img/icon_dots.svg";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import iconClose from "@/views/games/game2/assets/img/icon_close.svg";
+import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
 const store = useGameStore();
 </script>

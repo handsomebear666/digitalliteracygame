@@ -1,9 +1,5 @@
 <template>
   <div class="game-container" :class="{ 'shake-screen': store.isShaking }">
-    <transition name="fade">
-      <StartScreen v-if="!store.hasStarted" />
-    </transition>
-
     <div
       v-show="store.hasStarted"
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
@@ -60,27 +56,55 @@
 
 <script setup>
 import { computed } from "vue";
-import { useGameStore } from "@game2/store/useGameStore";
-import { GAME_STORY, ASSETS } from "@game2/data/story";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
 
-import Character from "@game2/components/game/Character.vue";
-import PhoneIcon from "@game2/components/game/PhoneIcon.vue";
-import DialogueUI from "@game2/components/game/DialogueUI.vue";
-import HintButton from "@game2/components/common/HintButton.vue";
-import Toast from "@game2/components/common/Toast.vue";
-import SmsPopup from "@game2/components/common/SmsPopup.vue";
-import WechatChat from "@game2/components/phone/WechatChat.vue";
-import OfficialAccount from "@game2/components/phone/OfficialAccount.vue";
-import PhishingForm from "@game2/components/phone/PhishingForm.vue";
-import ProfileFake from "@game2/components/phone/ProfileFake.vue";
-import ProfileReal from "@game2/components/phone/ProfileReal.vue";
-import FakeMoments from "@game2/components/phone/FakeMoments.vue";
-import GroupSearch from "@game2/components/phone/GroupSearch.vue";
-import ActionMenu from "@game2/components/phone/ActionMenu.vue";
-import StartScreen from "@game2/components/game/StartScreen.vue";
-
+import Character from "@/views/games/game2/components/game/Character.vue";
+import PhoneIcon from "@/views/games/game2/components/game/PhoneIcon.vue";
+import DialogueUI from "@/views/games/game2/components/game/DialogueUI.vue";
+import HintButton from "@/views/games/game2/components/common/HintButton.vue";
+import Toast from "@/views/games/game2/components/common/Toast.vue";
+import SmsPopup from "@/views/games/game2/components/common/SmsPopup.vue";
+import WechatChat from "@/views/games/game2/components/phone/WechatChat.vue";
+import OfficialAccount from "@/views/games/game2/components/phone/OfficialAccount.vue";
+import PhishingForm from "@/views/games/game2/components/phone/PhishingForm.vue";
+import ProfileFake from "@/views/games/game2/components/phone/ProfileFake.vue";
+import ProfileReal from "@/views/games/game2/components/phone/ProfileReal.vue";
+import FakeMoments from "@/views/games/game2/components/phone/FakeMoments.vue";
+import GroupSearch from "@/views/games/game2/components/phone/GroupSearch.vue";
+import ActionMenu from "@/views/games/game2/components/phone/ActionMenu.vue";
+import { onMounted, onUnmounted } from "vue";
+import game2Style from "@/views/games/game2/assets/css/style.css?inline"; // 引入 style.css 作为字符串
 const store = useGameStore();
 const reloadGame = () => location.reload();
+let styleElement = null;
+
+onMounted(() => {
+  store.tryPlayBGM();
+  const startAudio = () => {
+    store.tryPlayBGM();
+    document.removeEventListener("click", startAudio);
+    document.removeEventListener("touchstart", startAudio);
+  };
+  document.addEventListener("click", startAudio);
+  document.addEventListener("touchstart", startAudio);
+  // 动态注入样式
+  styleElement = document.createElement("style");
+  styleElement.textContent = game2Style;
+  document.head.appendChild(styleElement);
+});
+
+onUnmounted(() => {
+  // 移除样式
+  if (styleElement) {
+    styleElement.remove();
+    styleElement = null;
+  }
+  // 停止所有音频（需要在 store 中实现）
+  store.stopAllAudio();
+  // 清除所有定时器（需要在 store 中实现）
+  store.clearAllTimers();
+});
 
 const currentLine = computed(() =>
   GAME_STORY.scriptLines.find((l) => l.id === store.currentLineId),

@@ -10,6 +10,6 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
 const store = useGameStore();
 </script>

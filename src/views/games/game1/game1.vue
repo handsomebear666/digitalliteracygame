@@ -77,10 +77,13 @@ import FakeTaobao from "./components/minigames/FakeTaobao.vue";
 import FakeFaceTime from "./components/minigames/FakeFaceTime.vue";
 
 import { useStoryHandler } from "./composables/useStoryHandler.js";
+// 💥 核心引入：全局进度管理
+import { useGameProgress } from "@/composables/useGameProgress";
 
 const router = useRouter();
 const monsterImg = ASSETS.IMAGES.monster;
 const { handleChoice } = useStoryHandler();
+const { completeLevel } = useGameProgress(); // 拿到登记通关的方法
 
 const chatBox = ref(null);
 const currentInspectImage = ref("");
@@ -104,7 +107,6 @@ onMounted(() => {
   }
   sessionStorage.removeItem("fromHome");
 
-  // 动态注入样式
   styleElement = document.createElement("style");
   styleElement.textContent = game1Style;
   document.head.appendChild(styleElement);
@@ -118,18 +120,16 @@ onUnmounted(() => {
     styleElement = null;
   }
   store.stopAllAudio();
-  store.resetGame(); // 清除定时器、重置状态
+  store.resetGame();
 });
 
-// 全局函数供 HTML 调用
 const openTaobao = () => handleLinkClick("taobao");
 const openFaceTime = () => handleLinkClick("facetime");
 window.openTaobao = openTaobao;
 window.openFaceTime = openFaceTime;
 
-// 游戏启动
 const startGame = () => {
-  store.resetGame(); // 重置所有状态，清除定时器
+  store.resetGame();
   store.playSound("click");
   store.playSound("bgm");
   store.state.activeOverlay = "none";
@@ -143,7 +143,6 @@ const startGame = () => {
   });
 };
 
-// 交互拦截
 const handleImageClick = (src) => {
   currentInspectImage.value = src;
   store.state.activeOverlay = "inspector";
@@ -183,7 +182,6 @@ const handleLinkClick = (type) => {
   }
 };
 
-// 关卡结算
 const handleLevelCompleted = (level) => {
   const levelData = LEVEL_QUESTIONS[level];
   if (!levelData) return;
@@ -201,9 +199,15 @@ const handleLevelCompleted = (level) => {
 // 弹窗按钮处理
 const handleResultAction = (action) => {
   store.playSound("click");
+
+  // 💥 关键修复：只要不是失败，就向全局登记第一关(0)已经通关！
+  if (store.state.resultData.type !== "fail") {
+    completeLevel(0);
+  }
+
   if (action === "replay") {
     if (store.state.resultData.type === "fail") {
-      store.clearAllTimers(); // 清除所有定时器，停止旧剧情
+      store.clearAllTimers();
       store.state.messages = store.state.messages.filter(
         (m) => !m.extraClass || !m.extraClass.includes("bad-msg"),
       );
@@ -211,13 +215,17 @@ const handleResultAction = (action) => {
       store.state.showDrawer = true;
       store.state.groupName = "相亲相爱一家人 (27)";
     } else {
-      // 成功重玩：刷新页面
       sessionStorage.setItem("fromHome", "true");
       location.reload();
     }
   } else if (action === "home") {
     store.stopAllAudio();
     router.push("/");
+  } else if (action === "cards") {
+    // 💥 接收点击“收集知识卡片”按钮后的跳转动作
+    store.stopAllAudio();
+    store.state.activeOverlay = "none";
+    router.push("/game/game1/cards");
   }
 };
 </script>

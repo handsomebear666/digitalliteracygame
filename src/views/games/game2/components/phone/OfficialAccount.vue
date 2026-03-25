@@ -137,11 +137,11 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import oaIcon from "@game2/assets/img/oa_icon.png";
-import postCover from "@game2/assets/img/post_cover.png";
-import iconClose from "@game2/assets/img/icon_close.svg";
-import iconBack from "@game2/assets/img/icon_back.svg";
-import iconDots from "@game2/assets/img/icon_dots.svg";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import oaIcon from "@/views/games/game2/assets/img/oa_icon.png";
+import postCover from "@/views/games/game2/assets/img/post_cover.png";
+import iconClose from "@/views/games/game2/assets/img/icon_close.svg";
+import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
+import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
 const store = useGameStore();
 </script>

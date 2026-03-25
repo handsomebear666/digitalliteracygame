@@ -14,7 +14,16 @@ const routes = [
     name: "Game1",
     component: () => import("@/views/games/game1/game1.vue"),
   },
-  // game2 同理
+  {
+    path: "/game/game2",
+    name: "Game2",
+    component: () => import("@/views/games/game2/game2.vue"),
+  },
+  {
+    path: "/game/:id/cards",
+    name: "KnowledgeCards",
+    component: () => import("@/views/KnowledgeCardsView.vue"),
+  },
 ];
 
 const router = createRouter({

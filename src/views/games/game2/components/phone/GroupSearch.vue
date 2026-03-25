@@ -35,8 +35,8 @@
 </template>
 
 <script setup>
-import { useGameStore } from "@game2/store/useGameStore";
-import auntZhangImg from "@game2/assets/img/aunt_zhang.png";
+import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import auntZhangImg from "@/views/games/game2/assets/img/aunt_zhang.png";
 
 const store = useGameStore();
 </script>

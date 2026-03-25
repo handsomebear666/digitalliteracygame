@@ -11,6 +11,7 @@
         :game="game"
         :index="index"
         @play-game="handleGameStart"
+        @show-cards="handleShowCards"
       />
     </div>
   </div>
@@ -31,6 +32,14 @@ const handleGameStart = (index) => {
   if (currentGame.status === "active" || currentGame.status === "completed") {
     sessionStorage.setItem("fromHome", "true");
     router.push(`/game/${currentGame.id}`);
+  }
+};
+// 👇 新增处理卡片点击的函数
+const handleShowCards = (index) => {
+  const currentGame = games.value[index];
+  if (currentGame.status !== "locked") {
+    // 跳转到卡片专属页面
+    router.push(`/game/${currentGame.id}/cards`);
   }
 };
 </script>
