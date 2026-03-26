@@ -2,26 +2,11 @@
   <div class="cards-view-root">
     <div class="header-bar">
       <button class="back-icon-btn" @click="goBack" title="返回主页地图">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-          <path
-            d="M19 12H5"
-            stroke-width="2"
-            stroke-linecap="round"
-            fill="none"
-          />
-          <path
-            d="M11 6l-6 6 6 6"
-            stroke-width="2"
-            stroke-linecap="round"
-            fill="none"
-          />
-        </svg>
+        <img
+          src="@/assets/back.svg"
+          alt="返回"
+          style="width: 24px; height: 24px"
+        />
       </button>
       <div class="title">{{ gameData?.title }} - 知识图鉴</div>
     </div>
@@ -195,12 +180,12 @@ const getCardStyle = (index) => {
 
 /* 💥 优化 2：固定按钮大小，并为扩大热区做准备 */
 .back-icon-btn {
-  position: relative; /* 关键：为下方的 ::before 扩大热区做定位参照 */
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(0, 121, 107, 0.3);
-  width: 44px; /* 明确宽度，达到苹果推荐的最小触摸尺寸 */
-  height: 44px; /* 明确高度 */
-  padding: 0; /* 清除之前的 padding */
+  position: relative;
+  background: transparent; /* 去掉白底 */
+  border: none; /* 去掉绿边 */
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
