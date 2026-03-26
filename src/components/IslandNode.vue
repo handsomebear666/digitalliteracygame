@@ -148,13 +148,13 @@ const handleAction = () => {
 }
 
 .island-title-img {
-  height: 70px;
+  height: 90px;
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
 }
 .island-title-img img {
-  max-height: 100%;
+  max-height: 200px;
   width: auto;
   object-fit: contain;
 }
