@@ -217,19 +217,29 @@ watch(
   box-sizing: border-box;
 }
 
+/* 💥 修复 1：调整外壳盒子属性 */
 .danger-input-wrapper {
   position: relative;
   border: 2px solid transparent;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
+  box-sizing: border-box;
+  /* 把原本输入框的间距移到外壳上，保持和提交按钮的距离 */
   margin-bottom: 10px;
-  margin-bottom: 0 !important;
+  /* 切掉内部元素多余的直角边，防止溢出 */
+  overflow: hidden;
 }
 .danger-input {
+  margin-bottom: 0 !important; /* 强制取消向下的边距 */
   border-color: #ffcccc;
   color: #ff4444;
   pointer-events: none;
+}
+/* 💥 修复 2：当外层红框亮起时，让内部的输入框“隐身”融入环境 */
+.danger-input-wrapper.taobao-flaw-revealed .danger-input {
+  background-color: transparent !important; /* 让红色闪烁背景透出来 */
+  border-color: transparent !important; /* 隐藏自己的边框，只留外层红框 */
 }
 .danger-input::placeholder {
   color: #ff9999;
