@@ -5,7 +5,7 @@
         <img
           src="@/assets/back.svg"
           alt="返回"
-          style="width: 24px; height: 24px"
+          style="width: 44px; height: 44px"
         />
       </button>
       <div class="title">{{ gameData?.title }} - 知识图鉴</div>
@@ -40,32 +40,18 @@
       </div>
 
       <div class="swipe-hint">
-        <span v-if="currentIndex < cards.length - 1">☝️ 向上滑动翻页</span>
-        <span v-else-if="currentIndex > 0">👇 向下滑动返回</span>
+        <span>☝️ 向上滑动 / 👇 向下滑动</span>
       </div>
 
       <div class="desktop-controls">
-        <button
-          class="ctrl-btn"
-          @click="prevCard"
-          :disabled="currentIndex === 0"
-        >
-          🔺 上一张
-        </button>
-        <button
-          class="ctrl-btn"
-          @click="nextCard"
-          :disabled="currentIndex === cards.length - 1"
-        >
-          🔻 下一张
-        </button>
+        <button class="ctrl-btn" @click="prevCard">🔺 上一张</button>
+        <button class="ctrl-btn" @click="nextCard">🔻 下一张</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// 💥 引入 onMounted 和 onUnmounted 用于绑定键盘事件
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useGameProgress } from "@/composables/useGameProgress";
@@ -80,9 +66,56 @@ const cards = computed(() =>
   gameData.value ? gameData.value.cards || [] : [],
 );
 
+const totalCards = computed(() => cards.value.length);
 const currentIndex = ref(0);
 
-// --- 手机手势滑动检测逻辑 ---
+// 堆叠效果参数
+const MAX_TOTAL_OFFSET = 150; // 最远卡片的偏移量（px），控制堆叠总高度
+const MIN_OPACITY = 0.3; // 最远卡片的透明度
+const MIN_SCALE = 0.6; // 最远卡片的缩放
+
+// 计算步长：使最大偏移量固定，卡片数量多时步长小，数量少时步长大
+const step = computed(() => {
+  const n = totalCards.value;
+  if (n <= 1) return 0;
+  const maxDiff = Math.floor(n / 2);
+  return MAX_TOTAL_OFFSET / maxDiff;
+});
+
+// 计算环形相对差值（返回 [-floor(n/2), floor(n/2)] 之间的整数）
+const getRelativeDiff = (cardIdx, currentIdx, total) => {
+  if (total === 0) return 0;
+  let diff = (cardIdx - currentIdx + total) % total;
+  if (diff > total / 2) diff = diff - total;
+  return diff;
+};
+
+// 卡片样式：所有卡片可见，偏移量由步长和环形距离决定
+const getCardStyle = (index) => {
+  if (totalCards.value === 0) return { display: "none" };
+
+  const diff = getRelativeDiff(index, currentIndex.value, totalCards.value);
+  const absDiff = Math.abs(diff);
+  const s = step.value;
+
+  // 偏移量（正数向下，负数向上）
+  const translateY = diff * s;
+  // 缩放（线性衰减，不低于最小值）
+  const scale = Math.max(1 - absDiff * 0.08, MIN_SCALE);
+  // 透明度（线性衰减，不低于最小值）
+  const opacity = Math.max(1 - absDiff * 0.2, MIN_OPACITY);
+  const zIndex = 100 - absDiff;
+
+  return {
+    opacity,
+    transform: `translateY(${translateY}px) scale(${scale})`,
+    zIndex,
+    pointerEvents: diff === 0 ? "auto" : "none",
+    visibility: "visible",
+  };
+};
+
+// 触摸滑动
 let touchStartY = 0;
 const SWIPE_THRESHOLD = 15;
 
@@ -95,20 +128,15 @@ const handleTouchStart = (e) => {
 const handleTouchEnd = (e) => {
   const touchEndY = e.changedTouches[0].clientY;
   const deltaY = touchEndY - touchStartY;
-
   if (Math.abs(deltaY) < SWIPE_THRESHOLD) return;
-
-  if (deltaY < 0) {
-    nextCard(); // 向上滑
-  } else {
-    prevCard(); // 向下滑
-  }
+  if (deltaY < 0) nextCard();
+  else prevCard();
 };
 
-// --- 💥 电脑键盘快捷键逻辑 ---
+// 键盘控制
 const handleKeyDown = (e) => {
   if (e.key === "ArrowUp") {
-    e.preventDefault(); // 防止整个网页跟着滚动
+    e.preventDefault();
     prevCard();
   } else if (e.key === "ArrowDown") {
     e.preventDefault();
@@ -116,7 +144,6 @@ const handleKeyDown = (e) => {
   }
 };
 
-// 组件挂载时监听键盘，销毁时移除监听
 onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
 });
@@ -124,37 +151,20 @@ onUnmounted(() => {
   window.removeEventListener("keydown", handleKeyDown);
 });
 
-// --- 翻页与动画逻辑 ---
+// 循环翻页
 const prevCard = () => {
-  if (currentIndex.value > 0) currentIndex.value--;
+  if (totalCards.value === 0) return;
+  currentIndex.value =
+    (currentIndex.value - 1 + totalCards.value) % totalCards.value;
 };
 const nextCard = () => {
-  if (currentIndex.value < cards.value.length - 1) currentIndex.value++;
-};
-
-const getCardStyle = (index) => {
-  const diff = index - currentIndex.value;
-
-  if (diff < 0) {
-    return {
-      opacity: 0,
-      transform: "translateY(-150%) scale(0.8)",
-      zIndex: 0,
-      pointerEvents: "none",
-    };
-  }
-
-  return {
-    opacity: 1 - diff * 0.15,
-    transform: `translateY(${diff * 25}px) scale(${1 - diff * 0.05})`,
-    zIndex: 100 - diff,
-    pointerEvents: diff === 0 ? "auto" : "none",
-  };
+  if (totalCards.value === 0) return;
+  currentIndex.value = (currentIndex.value + 1) % totalCards.value;
 };
 </script>
 
 <style scoped>
-/* 全局容器保持不变 */
+/* 样式完全保留原有内容，未做任何改动 */
 .cards-view-root {
   height: 100vh;
   width: 100vw;
@@ -165,11 +175,8 @@ const getCardStyle = (index) => {
   overflow: hidden;
 }
 
-/* 导航栏样式保持不变 */
-/* 💥 优化 1：防止刘海屏或状态栏遮挡按钮 */
 .header-bar {
   width: 100%;
-  /* 使用 env(safe-area) 自动适配刘海屏，如果没刘海则默认 15px */
   padding: max(15px, env(safe-area-inset-top)) 20px 15px 20px;
   display: flex;
   align-items: center;
@@ -178,11 +185,10 @@ const getCardStyle = (index) => {
   z-index: 1000;
 }
 
-/* 💥 优化 2：固定按钮大小，并为扩大热区做准备 */
 .back-icon-btn {
   position: relative;
-  background: transparent; /* 去掉白底 */
-  border: none; /* 去掉绿边 */
+  background: transparent;
+  border: none;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -195,7 +201,6 @@ const getCardStyle = (index) => {
   flex-shrink: 0;
 }
 
-/* 💥 优化 3：核心魔法！向外扩张 15px 的隐形点击热区 */
 .back-icon-btn::before {
   content: "";
   position: absolute;
@@ -204,10 +209,8 @@ const getCardStyle = (index) => {
   left: -15px;
   right: -15px;
   border-radius: 50%;
-  /* background: rgba(255, 0, 0, 0.2); 你可以临时取消这行注释，看看实际的点击区域有多大！ */
 }
 
-/* 悬停与颜色过渡保持不变 */
 .back-icon-btn:hover {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -220,7 +223,6 @@ const getCardStyle = (index) => {
   fill: #00897b;
 }
 
-/* 标题居中补丁（因为按钮变成了固定的44px，所以这里补偿44px即可居中） */
 .title {
   flex: 1;
   text-align: center;
@@ -230,7 +232,6 @@ const getCardStyle = (index) => {
   margin-left: -44px;
 }
 
-/* 卡片主滑动区域 */
 .stack-main {
   flex: 1;
   width: 100%;
@@ -305,7 +306,6 @@ const getCardStyle = (index) => {
   font-size: 16px;
 }
 
-/* 手机端默认样式 */
 .swipe-hint {
   position: absolute;
   bottom: 20px;
@@ -318,22 +318,19 @@ const getCardStyle = (index) => {
   pointer-events: none;
 }
 .desktop-controls {
-  display: none; /* 手机端默认隐藏按钮 */
+  display: none;
 }
 
-/* 💥 响应式适配：如果是电脑宽屏（大于768px），则显示按钮，隐藏手势提示 */
 @media (min-width: 768px) {
   .swipe-hint {
-    display: none; /* 电脑上隐藏“向上滑动”的文字提示 */
+    display: none;
   }
-
   .desktop-controls {
     display: flex;
     gap: 20px;
     margin-top: 40px;
     z-index: 100;
   }
-
   .ctrl-btn {
     background: #00796b;
     color: white;
@@ -355,8 +352,6 @@ const getCardStyle = (index) => {
     background: #00695c;
     transform: translateY(-2px);
   }
-
-  /* 在按钮下方追加一行键盘快捷键提示 */
   .desktop-controls::after {
     content: "💡 提示：也可以使用键盘 ↑ ↓ 方向键翻页";
     position: absolute;
