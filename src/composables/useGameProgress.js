@@ -39,7 +39,7 @@ export function useGameProgress() {
       time: "5 分钟",
       titleImg: "src/assets/game2_title.png",
       iconImg: "",
-      desc: "本是家长里短的小区业主群，藏着披着 “张阿姨” 马甲的骗子，虚假推文藏着钓鱼陷阱,快来帮妈妈识破骗局！",
+      desc: "本是家长里短的小区业主群，藏着冒充张阿姨的骗子，虚假推文藏着钓鱼陷阱,快来帮妈妈识破骗局！",
       status: "active",
       tags: ["隐私防护", "权限管理", "数据安全"],
       cards: [

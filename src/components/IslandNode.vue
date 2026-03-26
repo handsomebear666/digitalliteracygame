@@ -143,7 +143,7 @@ const handleAction = () => {
 }
 .island-icon {
   font-size: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   text-align: center;
 }
 
