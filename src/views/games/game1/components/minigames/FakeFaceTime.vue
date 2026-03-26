@@ -194,9 +194,26 @@ watch(
   flex: 1;
   background: #f2f2f7;
   padding: 15px;
+  /* 留出底部空白，并适配手机底部横条的安全距离 */
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  box-sizing: border-box; /* 确保 padding 不会撑破宽度 */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+/* 💥 修复 2：共享请求卡片加上 border-box */
+.screen-share-alert {
+  width: 100%;
+  margin-top: auto;
+  box-sizing: border-box; /* 💥 核心修复：防止内边距撑破100%的宽度 */
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
 }
 .chat-msg {
   margin-bottom: 12px;
