@@ -118,21 +118,21 @@ export const GAME_STORY = {
   ],
   level3_opening: [
     {
-      sender: "老妈",
+      sender: "老爸",
       text: "吓死我了！刚才微信支付客服给我打了个腾腾会议视频，说我的账户被误开通了百万保障险，每个月要自动扣我 800 块钱！",
-      avatar: "mother",
+      avatar: "father",
       delay: 1500,
     },
     {
-      sender: "老妈",
+      sender: "老爸",
       text: "那个客服小姑娘穿着工服，说话特别专业，还能准确报出我的身份证号和家庭住址！她说马上帮我在线取消！",
-      avatar: "mother",
+      avatar: "father",
       delay: 3500,
     },
     {
-      sender: "老妈",
+      sender: "老爸",
       text: "她给我发了个链接，让我进去后打开屏幕共享，方便指导我操作。我正在弄呢，你们帮我看看这操作对不对？<br><br><a href='javascript:void(0)' onclick='openFaceTime()' style='color: #07c160; word-break: break-all; font-weight: bold;'>📞 点击加入客服视频会议</a>",
-      avatar: "mother",
+      avatar: "father",
       delay: 5500,
     },
     {

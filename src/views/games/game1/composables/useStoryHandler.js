@@ -47,7 +47,7 @@ export function useStoryHandler() {
       store.setGameTimeout(() => {
         store.showResult(
           "fail",
-          "闯关失败",
+          "辟谣失败",
           "正确沟通也是数字素养的一部分！\n嘲讽长辈引发逆反心理，不仅达不到科普目的，反而会伤了和气。",
         );
       }, 12500);
@@ -90,7 +90,7 @@ export function useStoryHandler() {
         });
       }, 10000);
       store.setGameTimeout(() => {
-        store.triggerHint("✅ 辟谣成功：有理有据，完美化解危机！");
+        store.triggerHint("✅ 有理有据，成功辟谣！");
       }, 12000);
       store.setGameTimeout(() => {
         store.state.currentLevel = 2;
@@ -133,7 +133,7 @@ export function useStoryHandler() {
       store.setGameTimeout(() => {
         store.showResult(
           "fail",
-          "闯关失败",
+          "劝阻失败",
           "言辞过激导致长辈逆反，没能及时阻断诈骗操作，造成了严重的经济损失！",
         );
       }, 8500);
@@ -166,12 +166,12 @@ export function useStoryHandler() {
         });
       }, 12000);
       store.setGameTimeout(() => {
-        store.triggerHint("✅ 劝阻成功：保住了三姑的钱袋子！");
+        store.triggerHint("✅ 成功保住了三姑的钱袋子！");
       }, 15000);
       store.setGameTimeout(() => {
         store.state.currentLevel = 3;
         store.playScript(GAME_STORY.level3_opening, () => {
-          store.triggerHint("去看看老妈发的视频会议链接吧~", 2000);
+          store.triggerHint("去看看老爸发的视频会议链接吧~", 2000);
           store.state.flaws.facetime.isOpen = true;
         });
       }, 17500);
@@ -181,13 +181,13 @@ export function useStoryHandler() {
     else if (val === "L3_A") {
       store.pushMessage({
         sender: "我",
-        text: "妈你别理她，这视频里的客服是 AI 换脸生成的，假的！这你都看不出来吗？🙄",
+        text: "爸你别理她，这视频里的客服是 AI 换脸生成的，假的！这你都看不出来吗？🙄",
         isMe: true,
         extraClass: "bad-msg-3",
       });
       store.setGameTimeout(() => {
         store.pushMessage({
-          sender: "老妈",
+          sender: "老爸",
           text: "嘿你这孩子，怎么可能假？人活生生在那说话呢！你别瞎说，我赶紧弄完，不然扣钱了！",
           extraClass: "bad-msg-3",
         });
@@ -201,7 +201,7 @@ export function useStoryHandler() {
       }, 5000);
       store.setGameTimeout(() => {
         store.pushMessage({
-          sender: "老妈",
+          sender: "老爸",
           text: "完了……我刚共享完屏幕，银行发短信说我卡里的定期全被转走了😭😭😭！",
           extraClass: "bad-msg-3",
         });
@@ -216,7 +216,7 @@ export function useStoryHandler() {
     } else if (val === "L3_B") {
       store.pushMessage({
         sender: "我",
-        text: "妈！马上挂断！开飞行模式！官方人员不会通过非官方平台来联系你的！",
+        text: "爸！马上挂断！开飞行模式！官方人员不会通过非官方平台来联系你的！",
         isMe: true,
       });
       store.setGameTimeout(() => {
@@ -228,16 +228,16 @@ export function useStoryHandler() {
       }, 3000);
       store.setGameTimeout(() => {
         store.pushMessage({
-          sender: "老妈",
+          sender: "老爸",
           text: "哎呀！对对对，民警同志来小区宣传的时候讲过不能屏幕共享！我着急一下子忘了，我马上挂断拉黑！",
         });
       }, 5000);
       store.setGameTimeout(() => {
-        store.hideMessageByKeyword("老妈", "视频会议");
+        store.hideMessageByKeyword("老爸", "视频会议");
       }, 6500);
       store.setGameTimeout(() => {
         store.pushMessage({
-          sender: "老妈",
+          sender: "老爸",
           text: "辖区的民警同志给我打电话了，刚刚那个果然是诈骗！",
         });
       }, 8500);
@@ -254,10 +254,13 @@ export function useStoryHandler() {
         });
       }, 12500);
       store.setGameTimeout(() => {
-        store.pushMessage({ sender: "老爸", text: "简直防不胜防！" });
+        store.pushMessage({ sender: "老妈", text: "简直防不胜防！" });
       }, 14500);
       store.setGameTimeout(() => {
-        store.pushMessage({ sender: "老妈", text: "幸好没上当😌多亏了咱娃！" });
+        store.pushMessage({
+          sender: "老爸",
+          text: "幸好没上当😌多亏了咱家孩子！",
+        });
       }, 16500);
       store.setGameTimeout(() => {
         store.pushMessage({
@@ -266,7 +269,7 @@ export function useStoryHandler() {
         });
       }, 18500);
       store.setGameTimeout(() => {
-        store.triggerHint("✅ 极限救援成功：成功守住老妈的隐私和钱包！");
+        store.triggerHint("✅ 成功守住老爸的隐私和钱包！");
       }, 21500);
       store.setGameTimeout(() => {
         store.showResult(
