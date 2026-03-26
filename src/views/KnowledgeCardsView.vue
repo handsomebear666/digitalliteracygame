@@ -55,32 +55,19 @@
       </div>
 
       <div class="swipe-hint">
-        <span v-if="currentIndex < cards.length - 1">☝️ 向上滑动翻页</span>
-        <span v-else-if="currentIndex > 0">👇 向下滑动返回</span>
+        <span>☝️ 向上滑动 / 👇 向下滑动</span>
       </div>
 
+      <!-- 电脑端按钮，支持循环 -->
       <div class="desktop-controls">
-        <button
-          class="ctrl-btn"
-          @click="prevCard"
-          :disabled="currentIndex === 0"
-        >
-          🔺 上一张
-        </button>
-        <button
-          class="ctrl-btn"
-          @click="nextCard"
-          :disabled="currentIndex === cards.length - 1"
-        >
-          🔻 下一张
-        </button>
+        <button class="ctrl-btn" @click="prevCard">🔺 上一张</button>
+        <button class="ctrl-btn" @click="nextCard">🔻 下一张</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// 💥 引入 onMounted 和 onUnmounted 用于绑定键盘事件
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useGameProgress } from "@/composables/useGameProgress";
@@ -95,14 +82,21 @@ const cards = computed(() =>
   gameData.value ? gameData.value.cards || [] : [],
 );
 
+const totalCards = computed(() => cards.value.length);
 const currentIndex = ref(0);
 
-// --- 手机手势滑动检测逻辑 ---
+// 堆叠效果参数
+const STEP = 25; // 每张卡片之间的垂直偏移量（固定厚度）
+const MAX_VISIBLE = 3; // 前后最多显示 3 张（当前 + 前后各 3，共最多 7 张）
+const OPACITY_FACTOR = 0.2; // 每远离一层，透明度减少 0.2
+const SCALE_FACTOR = 0.05; // 每远离一层，缩放减少 0.05
+
 let touchStartY = 0;
 const SWIPE_THRESHOLD = 15;
 
 const goBack = () => router.push("/");
 
+// 触摸滑动
 const handleTouchStart = (e) => {
   touchStartY = e.touches[0].clientY;
 };
@@ -110,20 +104,15 @@ const handleTouchStart = (e) => {
 const handleTouchEnd = (e) => {
   const touchEndY = e.changedTouches[0].clientY;
   const deltaY = touchEndY - touchStartY;
-
   if (Math.abs(deltaY) < SWIPE_THRESHOLD) return;
-
-  if (deltaY < 0) {
-    nextCard(); // 向上滑
-  } else {
-    prevCard(); // 向下滑
-  }
+  if (deltaY < 0) nextCard();
+  else prevCard();
 };
 
-// --- 💥 电脑键盘快捷键逻辑 ---
+// 键盘控制
 const handleKeyDown = (e) => {
   if (e.key === "ArrowUp") {
-    e.preventDefault(); // 防止整个网页跟着滚动
+    e.preventDefault();
     prevCard();
   } else if (e.key === "ArrowDown") {
     e.preventDefault();
@@ -131,7 +120,6 @@ const handleKeyDown = (e) => {
   }
 };
 
-// 组件挂载时监听键盘，销毁时移除监听
 onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
 });
@@ -139,31 +127,53 @@ onUnmounted(() => {
   window.removeEventListener("keydown", handleKeyDown);
 });
 
-// --- 翻页与动画逻辑 ---
+// 循环翻页
 const prevCard = () => {
-  if (currentIndex.value > 0) currentIndex.value--;
+  if (totalCards.value === 0) return;
+  currentIndex.value =
+    (currentIndex.value - 1 + totalCards.value) % totalCards.value;
 };
 const nextCard = () => {
-  if (currentIndex.value < cards.value.length - 1) currentIndex.value++;
+  if (totalCards.value === 0) return;
+  currentIndex.value = (currentIndex.value + 1) % totalCards.value;
 };
 
-const getCardStyle = (index) => {
-  const diff = index - currentIndex.value;
+// 计算环形相对差值（使 diff 在 [-floor(total/2), floor(total/2)] 之间）
+const getRelativeDiff = (cardIdx, currentIdx, total) => {
+  if (total === 0) return 0;
+  let diff = (cardIdx - currentIdx + total) % total;
+  if (diff > total / 2) diff = diff - total;
+  return diff;
+};
 
-  if (diff < 0) {
+// 卡片样式：根据环形相对位置计算偏移、缩放、透明度
+const getCardStyle = (index) => {
+  if (totalCards.value === 0) return { display: "none" };
+
+  const diff = getRelativeDiff(index, currentIndex.value, totalCards.value);
+  const absDiff = Math.abs(diff);
+
+  if (absDiff > MAX_VISIBLE) {
     return {
       opacity: 0,
-      transform: "translateY(-150%) scale(0.8)",
+      transform: `translateY(${diff * STEP}px) scale(${1 - absDiff * SCALE_FACTOR})`,
       zIndex: 0,
       pointerEvents: "none",
+      visibility: "hidden",
     };
   }
 
+  const translateY = diff * STEP;
+  const scale = 1 - absDiff * SCALE_FACTOR;
+  const opacity = 1 - absDiff * OPACITY_FACTOR;
+  const zIndex = 100 - absDiff;
+
   return {
-    opacity: 1 - diff * 0.15,
-    transform: `translateY(${diff * 25}px) scale(${1 - diff * 0.05})`,
-    zIndex: 100 - diff,
+    opacity,
+    transform: `translateY(${translateY}px) scale(${scale})`,
+    zIndex,
     pointerEvents: diff === 0 ? "auto" : "none",
+    visibility: "visible",
   };
 };
 </script>
@@ -361,12 +371,17 @@ const getCardStyle = (index) => {
     box-shadow: 0 4px 10px rgba(0, 121, 107, 0.3);
     transition: all 0.2s;
   }
+  /* 按钮永远启用，移除禁用样式 */
   .ctrl-btn:disabled {
-    background: #b0bec5;
-    box-shadow: none;
-    cursor: not-allowed;
+    background: #00796b;
+    cursor: pointer;
+    opacity: 0.9;
   }
   .ctrl-btn:not(:disabled):hover {
+    background: #00695c;
+    transform: translateY(-2px);
+  }
+  .ctrl-btn:disabled:hover {
     background: #00695c;
     transform: translateY(-2px);
   }
