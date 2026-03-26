@@ -223,7 +223,7 @@ watch(
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   margin-bottom: 0 !important;
 }
 .danger-input {
