@@ -148,7 +148,7 @@ const handleAction = () => {
 }
 
 .island-title-img {
-  height: 35px;
+  height: 70px;
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
