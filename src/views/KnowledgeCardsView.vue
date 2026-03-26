@@ -70,7 +70,7 @@ const totalCards = computed(() => cards.value.length);
 const currentIndex = ref(0);
 
 // 堆叠效果参数
-const MAX_TOTAL_OFFSET = 150; // 所有卡片堆叠的总偏移量（px），控制堆叠整体高度
+const MAX_TOTAL_OFFSET = 50; // 所有卡片堆叠的总偏移量（px），控制堆叠整体高度
 const MIN_SCALE = 0.7; // 最底层卡片的缩放
 const MIN_OPACITY = 0.3; // 最底层卡片的透明度
 
