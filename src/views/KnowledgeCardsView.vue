@@ -70,49 +70,57 @@ const totalCards = computed(() => cards.value.length);
 const currentIndex = ref(0);
 
 // 堆叠效果参数
-const MAX_TOTAL_OFFSET = 150; // 最远卡片的偏移量（px），控制堆叠总高度
-const MIN_OPACITY = 0.3; // 最远卡片的透明度
-const MIN_SCALE = 0.6; // 最远卡片的缩放
+const MAX_TOTAL_OFFSET = 150; // 所有卡片堆叠的总偏移量（px），控制堆叠整体高度
+const MIN_SCALE = 0.7; // 最底层卡片的缩放
+const MIN_OPACITY = 0.3; // 最底层卡片的透明度
 
-// 计算步长：使最大偏移量固定，卡片数量多时步长小，数量少时步长大
+// 计算每层偏移量（卡片少时步长大，多时步长小，保证总高度固定）
 const step = computed(() => {
   const n = totalCards.value;
   if (n <= 1) return 0;
-  const maxDiff = Math.floor(n / 2);
-  return MAX_TOTAL_OFFSET / maxDiff;
+  return MAX_TOTAL_OFFSET / (n - 1);
 });
 
-// 计算环形相对差值（返回 [-floor(n/2), floor(n/2)] 之间的整数）
-const getRelativeDiff = (cardIdx, currentIdx, total) => {
-  if (total === 0) return 0;
-  let diff = (cardIdx - currentIdx + total) % total;
-  if (diff > total / 2) diff = diff - total;
-  return diff;
+// 获取卡片在堆叠中的深度（0 表示当前卡片，1 表示下一张，2 表示下下一张... 循环）
+const getDepth = (index) => {
+  if (totalCards.value === 0) return 0;
+  // 环形顺序：从当前卡片开始向后计数
+  const depth =
+    (index - currentIndex.value + totalCards.value) % totalCards.value;
+  return depth;
 };
 
-// 卡片样式：所有卡片可见，偏移量由步长和环形距离决定
+// 卡片样式：堆叠效果（当前卡片在最上面，其他卡片依次向下偏移）
 const getCardStyle = (index) => {
   if (totalCards.value === 0) return { display: "none" };
 
-  const diff = getRelativeDiff(index, currentIndex.value, totalCards.value);
-  const absDiff = Math.abs(diff);
+  const depth = getDepth(index);
   const s = step.value;
 
-  // 偏移量（正数向下，负数向上）
-  const translateY = diff * s;
-  // 缩放（线性衰减，不低于最小值）
-  const scale = Math.max(1 - absDiff * 0.08, MIN_SCALE);
-  // 透明度（线性衰减，不低于最小值）
-  const opacity = Math.max(1 - absDiff * 0.2, MIN_OPACITY);
-  const zIndex = 100 - absDiff;
+  if (depth === 0) {
+    // 当前卡片
+    return {
+      opacity: 1,
+      transform: "translateY(0px) scale(1)",
+      zIndex: 100,
+      pointerEvents: "auto",
+      visibility: "visible",
+    };
+  } else {
+    // 堆叠卡片：偏移量 = 深度 * 步长，并限制最大值（防止超出容器）
+    const translateY = Math.min(depth * s, MAX_TOTAL_OFFSET);
+    const scale = Math.max(1 - depth * 0.05, MIN_SCALE);
+    const opacity = Math.max(1 - depth * 0.12, MIN_OPACITY);
+    const zIndex = 100 - depth;
 
-  return {
-    opacity,
-    transform: `translateY(${translateY}px) scale(${scale})`,
-    zIndex,
-    pointerEvents: diff === 0 ? "auto" : "none",
-    visibility: "visible",
-  };
+    return {
+      opacity,
+      transform: `translateY(${translateY}px) scale(${scale})`,
+      zIndex,
+      pointerEvents: "none",
+      visibility: "visible",
+    };
+  }
 };
 
 // 触摸滑动
