@@ -70,6 +70,7 @@ header {
 .title-img {
   height: auto; /* 可根据实际图片比例调整 */
   width: 90%;
+  max-height: 100px;
   vertical-align: middle;
 }
 </style>
