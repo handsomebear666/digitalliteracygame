@@ -276,17 +276,17 @@ const handleAction = () => {
 }
 
 .island-node.completed .island-card::after {
-  content: "✅ 真相大白";
+  content: ""; /* 清空文字内容 */
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: rgba(76, 175, 80, 0.9);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
-  transform: rotate(-15deg);
+  width: 50px; /* 根据图片尺寸调整 */
+  height: 50px;
+  background-image: url("@/assets/yes.svg"); /* 引用图片 */
+  background-size: contain; /* 图片等比缩放适配 */
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: rotate(-15deg); /* 保留倾斜效果（可选） */
   pointer-events: none;
   z-index: 5;
 }
