@@ -214,6 +214,7 @@ watch(
   padding: 0 10px;
   background: #f9f9f9;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .danger-input-wrapper {
@@ -222,6 +223,8 @@ watch(
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
+  margin-bottom: 10px;
+  margin-bottom: 0 !important;
 }
 .danger-input {
   border-color: #ffcccc;
