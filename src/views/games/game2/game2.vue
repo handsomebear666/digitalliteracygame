@@ -96,8 +96,8 @@ const showVictoryPopup = () => {
 const showFailPopup = (message) => {
   resultData.value = {
     type: "fail",
-    title: "⚠️ 防骗失败",
-    text: message || "很遗憾，家人还是被骗了，下次一定要更谨慎哦！",
+    title: "防骗失败",
+    text: message || "很遗憾，没有劝阻成功，妈妈还是被骗了！",
   };
   showResultPopup.value = true;
 };

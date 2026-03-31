@@ -240,13 +240,13 @@ export const useGameStore = defineStore("game", {
       this.showToast(DEBUNK_MESSAGES[type] || "发现破绽！");
       if (this.foundFlawsL1.length === 3) {
         this.setGameTimeout(
-          () => this.showToast("🎉 证据收集完毕！正在切回聊天..."),
+          () => this.showToast("这不是真正的市图书馆公众号！快告诉妈妈！"),
           1500,
         );
         this.setGameTimeout(() => {
           this.returnToDialogue();
           this.nextLine(6);
-        }, 3500);
+        }, 1000);
       }
     },
 
@@ -286,17 +286,6 @@ export const useGameStore = defineStore("game", {
           }, 2500);
         }
       }
-    },
-
-    doReport() {
-      if (this.isGameOver) return;
-      this.showActionSheet = false;
-      this.showToast("✅ 投诉提交成功！微信安全中心已介入！");
-      this.setGameTimeout(() => {
-        this.showPhoneSystem = false;
-        this.showHintBtn = false;
-        this.setGameResult("win");
-      }, 2000);
     },
   },
 });
