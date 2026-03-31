@@ -29,16 +29,18 @@ export const useGameStore = defineStore("game", {
     foundFlawsL3: [],
     gameResult: null,
     gameResultMessage: "",
-    isGameOver: false, // 新增游戏结束标志
+    isGameOver: false,
   }),
 
   actions: {
+    // 设置游戏结果
     setGameResult(result, message = "") {
       this.gameResult = result;
       this.gameResultMessage = message;
-      this.isGameOver = true; // 游戏结束，禁用交互
+      this.isGameOver = true;
     },
 
+    // 重置整个游戏（用于胜利后重新开始或从主页进入）
     resetGame() {
       this.gameLevel = 1;
       this.level2Solved = false;
@@ -61,6 +63,25 @@ export const useGameStore = defineStore("game", {
         bgmInstance.currentTime = 0;
         bgmInstance = null;
       }
+      this.tryPlayBGM();
+    },
+
+    // 回到选项处（用于失败后重新选择）
+    goBackToOptions() {
+      this.currentLineId = 3;
+      this.gameResult = null;
+      this.gameResultMessage = "";
+      this.isGameOver = false;
+      this.gameLevel = 1;
+      this.level2Solved = false;
+      this.showPhoneSystem = false;
+      this.showHintBtn = false;
+      this.showSmsPopup = false;
+      this.showActionSheet = false;
+      this.isShaking = false;
+      this.foundFlawsL1 = [];
+      this.foundFlawsL3 = [];
+      this.clearAllTimers();
       this.tryPlayBGM();
     },
 
@@ -107,20 +128,14 @@ export const useGameStore = defineStore("game", {
 
     // === 对话与进度推进 ===
     nextLine(id) {
-      if (this.isGameOver) return; // 游戏已结束，忽略所有推进
+      if (this.isGameOver) return;
 
       this.currentLineId = id;
       const line = GAME_STORY.scriptLines.find((l) => l.id === id);
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
       else if (line?.customAction === "startLevel3") this.gameLevel = 3;
       else if (line?.customAction === "startReport") this.gameLevel = 4;
-
-      if (id === 4) {
-        this.setGameResult(
-          "lose",
-          "你没有阻止妈妈，她点击了钓鱼链接，银行卡里的钱被转走了。",
-        );
-      }
+      // 注意：不再自动设置失败，由 DialogueUI 在对话结束后触发
     },
 
     // === 手机界面全局调度 ===
@@ -223,6 +238,7 @@ export const useGameStore = defineStore("game", {
       }
     },
 
+    // 投诉成功 -> 游戏胜利
     doReport() {
       if (this.isGameOver) return;
       this.showActionSheet = false;

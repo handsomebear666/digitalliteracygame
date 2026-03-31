@@ -81,7 +81,7 @@ export const GAME_STORY = {
       name: "妈妈",
       emotion: "sad",
       text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！\n【游戏结束：未能阻止风险】",
-      // 删除 options 数组，使其成为纯文本结束行
+      customAction: "badEnd", // 标记为失败结局
     },
     {
       id: 5,
