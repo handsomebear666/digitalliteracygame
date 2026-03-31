@@ -30,14 +30,18 @@ export const useGameStore = defineStore("game", {
     gameResult: null,
     gameResultMessage: "",
     isGameOver: false,
+    failLevel: null, // 记录失败时的关卡
   }),
 
   actions: {
-    // 设置游戏结果
+    // 设置游戏结果，并记录失败时的关卡
     setGameResult(result, message = "") {
       this.gameResult = result;
       this.gameResultMessage = message;
       this.isGameOver = true;
+      if (result === "lose") {
+        this.failLevel = this.gameLevel; // 记录失败时的关卡
+      }
     },
 
     // 重置整个游戏（用于胜利后重新开始或从主页进入）
@@ -58,6 +62,7 @@ export const useGameStore = defineStore("game", {
       this.gameResult = null;
       this.gameResultMessage = "";
       this.isGameOver = false;
+      this.failLevel = null;
       if (bgmInstance) {
         bgmInstance.pause();
         bgmInstance.currentTime = 0;
@@ -66,23 +71,54 @@ export const useGameStore = defineStore("game", {
       this.tryPlayBGM();
     },
 
-    // 回到选项处（用于失败后重新选择）
+    // 回到选项处或第二关开始处（根据失败时的关卡）
     goBackToOptions() {
-      this.currentLineId = 3;
-      this.gameResult = null;
-      this.gameResultMessage = "";
-      this.isGameOver = false;
-      this.gameLevel = 1;
-      this.level2Solved = false;
-      this.showPhoneSystem = false;
-      this.showHintBtn = false;
-      this.showSmsPopup = false;
-      this.showActionSheet = false;
-      this.isShaking = false;
-      this.foundFlawsL1 = [];
-      this.foundFlawsL3 = [];
-      this.clearAllTimers();
-      this.tryPlayBGM();
+      const level = this.failLevel;
+      if (level === 1) {
+        // 第一关失败：回到选项处
+        this.currentLineId = 3;
+        this.gameLevel = 1;
+        this.level2Solved = false;
+        this.showPhoneSystem = false;
+        this.showHintBtn = false;
+        this.showSmsPopup = false;
+        this.foundFlawsL1 = [];
+        this.foundFlawsL3 = [];
+        this.isGameOver = false;
+        this.gameResult = null;
+        this.gameResultMessage = "";
+        this.failLevel = null;
+        this.clearAllTimers();
+        this.tryPlayBGM();
+      } else if (level === 2) {
+        // 第二关失败：回到钓鱼网页界面
+        this.gameLevel = 2;
+        this.level2Solved = false;
+        this.showPhoneSystem = true;
+        this.activePhonePage = "welfare";
+        this.showHintBtn = true;
+        this.showSmsPopup = false;
+        this.isGameOver = false;
+        this.gameResult = null;
+        this.gameResultMessage = "";
+        this.failLevel = null;
+        // 清除所有定时器，避免残留
+        this.clearAllTimers();
+        // 重新启动短信弹窗定时器（模拟 togglePhone 的逻辑）
+        this.setGameTimeout(() => {
+          if (
+            this.showPhoneSystem &&
+            this.activePhonePage === "welfare" &&
+            !this.level2Solved
+          ) {
+            this.showSmsPopup = true;
+          }
+        }, 1000);
+        this.tryPlayBGM();
+      } else {
+        // 默认全重置（保险）
+        this.resetGame();
+      }
     },
 
     setGameTimeout(callback, delay) {
@@ -135,7 +171,6 @@ export const useGameStore = defineStore("game", {
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
       else if (line?.customAction === "startLevel3") this.gameLevel = 3;
       else if (line?.customAction === "startReport") this.gameLevel = 4;
-      // 注意：不再自动设置失败，由 DialogueUI 在对话结束后触发
     },
 
     // === 手机界面全局调度 ===
