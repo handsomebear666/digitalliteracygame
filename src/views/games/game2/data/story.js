@@ -80,7 +80,7 @@ export const GAME_STORY = {
       id: 4,
       name: "妈妈",
       emotion: "sad",
-      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！\n【游戏结束：未能阻止风险】",
+      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！",
       customAction: "badEnd", // 标记为失败结局
     },
     {
