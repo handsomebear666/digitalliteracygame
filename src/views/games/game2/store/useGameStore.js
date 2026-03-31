@@ -18,6 +18,7 @@ export const useGameStore = defineStore("game", {
     isTyping: false,
     showPhoneSystem: false,
     activePhonePage: "chat",
+    previousPhonePage: null, // 记录上一个页面
     showHintBtn: false,
     showSmsPopup: false,
     showActionSheet: false,
@@ -30,8 +31,8 @@ export const useGameStore = defineStore("game", {
     gameResult: null,
     gameResultMessage: "",
     isGameOver: false,
-    failLevel: null, // 记录失败时的关卡
-    resetPhishingForm: false, // 新增：用于通知钓鱼网页清空输入框
+    failLevel: null,
+    resetPhishingForm: false,
   }),
 
   actions: {
@@ -45,13 +46,14 @@ export const useGameStore = defineStore("game", {
       }
     },
 
-    // 重置整个游戏（用于胜利后重新开始或从主页进入）
+    // 重置整个游戏
     resetGame() {
       this.gameLevel = 1;
       this.level2Solved = false;
       this.currentLineId = 0;
       this.showPhoneSystem = false;
       this.activePhonePage = "chat";
+      this.previousPhonePage = null;
       this.showHintBtn = false;
       this.showSmsPopup = false;
       this.showActionSheet = false;
@@ -64,7 +66,7 @@ export const useGameStore = defineStore("game", {
       this.gameResultMessage = "";
       this.isGameOver = false;
       this.failLevel = null;
-      this.resetPhishingForm = false; // 重置信号
+      this.resetPhishingForm = false;
       if (bgmInstance) {
         bgmInstance.pause();
         bgmInstance.currentTime = 0;
@@ -77,7 +79,6 @@ export const useGameStore = defineStore("game", {
     goBackToOptions() {
       const level = this.failLevel;
       if (level === 1) {
-        // 第一关失败：回到选项处
         this.currentLineId = 3;
         this.gameLevel = 1;
         this.level2Solved = false;
@@ -92,10 +93,8 @@ export const useGameStore = defineStore("game", {
         this.failLevel = null;
         this.clearAllTimers();
         this.tryPlayBGM();
-        // 第一关不需要清空输入框，但为避免误用，仍重置信号
         this.resetPhishingForm = false;
       } else if (level === 2) {
-        // 第二关失败：回到钓鱼网页界面
         this.gameLevel = 2;
         this.level2Solved = false;
         this.showPhoneSystem = true;
@@ -107,7 +106,6 @@ export const useGameStore = defineStore("game", {
         this.gameResultMessage = "";
         this.failLevel = null;
         this.clearAllTimers();
-        // 重新启动短信弹窗定时器（模拟 togglePhone 的逻辑）
         this.setGameTimeout(() => {
           if (
             this.showPhoneSystem &&
@@ -118,14 +116,30 @@ export const useGameStore = defineStore("game", {
           }
         }, 1000);
         this.tryPlayBGM();
-        // 触发清空输入框信号
         this.resetPhishingForm = true;
       } else {
-        // 默认全重置（保险）
         this.resetGame();
       }
     },
 
+    // 页面导航（记录上一个页面）
+    navigatePhone(page) {
+      this.previousPhonePage = this.activePhonePage;
+      this.activePhonePage = page;
+    },
+
+    // 返回上一个页面
+    returnToPrevious() {
+      if (this.previousPhonePage) {
+        this.activePhonePage = this.previousPhonePage;
+        this.previousPhonePage = null;
+      } else {
+        this.returnToDialogue();
+      }
+    },
+
+    // ... 其余方法保持不变（setGameTimeout, clearAllTimers, stopAllAudio, tryPlayBGM, playClickAudio, nextLine, togglePhone, returnToDialogue, showToast, triggerL1Debunk, catchSMSFlaw, triggerL3Debunk, doReport）
+    // 注意：以下方法保留原样，为避免遗漏，请确保复制完整。
     setGameTimeout(callback, delay) {
       const id = setTimeout(() => {
         callback();
@@ -167,10 +181,8 @@ export const useGameStore = defineStore("game", {
       this.tryPlayBGM();
     },
 
-    // === 对话与进度推进 ===
     nextLine(id) {
       if (this.isGameOver) return;
-
       this.currentLineId = id;
       const line = GAME_STORY.scriptLines.find((l) => l.id === id);
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
@@ -178,7 +190,6 @@ export const useGameStore = defineStore("game", {
       else if (line?.customAction === "startReport") this.gameLevel = 4;
     },
 
-    // === 手机界面全局调度 ===
     togglePhone() {
       this.playClickAudio();
       this.showPhoneSystem = true;
@@ -209,10 +220,6 @@ export const useGameStore = defineStore("game", {
       this.showSmsPopup = false;
     },
 
-    navigatePhone(page) {
-      this.activePhonePage = page;
-    },
-
     showToast(text, isDanger = false) {
       this.toastMsg = text;
       this.toastBgColor = isDanger ? "#ff4d4f" : "#07c160";
@@ -221,7 +228,6 @@ export const useGameStore = defineStore("game", {
       }, 2000);
     },
 
-    // === 第一关逻辑 ===
     triggerL1Debunk(type) {
       if (!this.foundFlawsL1.includes(type)) {
         this.foundFlawsL1.push(type);
@@ -239,7 +245,6 @@ export const useGameStore = defineStore("game", {
       }
     },
 
-    // === 第二关逻辑 ===
     catchSMSFlaw() {
       if (this.level2Solved) return;
       this.level2Solved = true;
@@ -257,7 +262,6 @@ export const useGameStore = defineStore("game", {
       }, 2500);
     },
 
-    // === 第三关与第四关逻辑 ===
     triggerL3Debunk(type) {
       if (this.gameLevel < 3 || this.foundFlawsL3.includes(type)) return;
       this.foundFlawsL3.push(type);
@@ -279,7 +283,6 @@ export const useGameStore = defineStore("game", {
       }
     },
 
-    // 投诉成功 -> 游戏胜利
     doReport() {
       if (this.isGameOver) return;
       this.showActionSheet = false;
