@@ -37,9 +37,9 @@ export const ASSETS = {
 };
 
 export const DEBUNK_MESSAGES = {
-  typo: "【破绽 1】名字是“管”字，且无官方认证！",
-  subject: "【破绽 2】市级机构的认证主体绝对不可能是“个人”！",
-  history: "【破绽 3】堂堂市级机构，竟然只有最新的一条推文！",
+  typo: "公众号名字中是管字，且无官方认证！",
+  subject: "市图书馆公众号的认证主体绝对不可能是个人！",
+  history: "公众号竟然只有一条发福利的推文，这不正常！",
 };
 
 export const GAME_STORY = {
@@ -49,14 +49,14 @@ export const GAME_STORY = {
       id: 0,
       name: "妈妈",
       emotion: "happy",
-      text: "林林，张大姐在业主群发了个咱市图书馆的公众号名片，说关注就能领 50 块钱话费和一箱抽纸。",
+      text: "林林，张大姐在业主群发了个咱市图书馆的公众号名片，说在最新的推文里点击链接，就能领 50 块钱话费和一箱抽纸。",
       nextId: 1,
     },
     {
       id: 1,
       name: "妈妈",
       emotion: "thinking",
-      text: "我看头像是咱图书馆的标，这就准备点关注了！",
+      text: "我看头像是咱图书馆的图标，我这就准备去领取了！",
       nextId: 2,
     },
     {
@@ -87,13 +87,13 @@ export const GAME_STORY = {
       id: 5,
       name: "系统",
       emotion: "thinking",
-      text: "（点击右上角图标，去群聊天中帮妈妈看看吧！）",
+      text: "（点击右上角图标，去群聊中帮妈妈把把关！）",
     },
     {
       id: 6,
       name: "我",
       emotion: "happy",
-      text: "妈！你看这个公众号的名字，馆变成了管，没加 V 认证，主体还是个个人。这就是个专门骗取信息的高仿钓鱼号！",
+      text: "妈！你看这个公众号的名字，馆变成了管，没加 V 认证，主体还是个人。这就是个专门骗取信息的高仿钓鱼号！",
       nextId: 7,
     },
     {
@@ -107,7 +107,7 @@ export const GAME_STORY = {
       id: 8,
       name: "妈妈",
       emotion: "normal",
-      text: "不过就算是个体店搞活动呢？我都点链接把地址和手机号填了，短信验证码刚好发过来了。",
+      text: "不过可能是个体店搞活动呢？我已经点击链接把地址和手机号填了，短信验证码刚好发过来了。",
       nextId: 9,
     },
     {
@@ -135,7 +135,7 @@ export const GAME_STORY = {
       id: 12,
       name: "我",
       emotion: "normal",
-      text: "妈，您确定屏幕那头真的是张大姐吗？看我怎么识破她的伪装！",
+      text: "妈，您确定屏幕那头真的是张大姐吗？看我怎么拆穿她的伪装！",
       nextId: 13,
     },
     {
