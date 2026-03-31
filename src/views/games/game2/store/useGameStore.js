@@ -274,7 +274,7 @@ export const useGameStore = defineStore("game", {
           this.setGameTimeout(() => {
             this.returnToDialogue();
             this.nextLine(14);
-          }, 2500);
+          }, 2500000);
         }
       }
     },
