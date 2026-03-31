@@ -162,17 +162,32 @@ export const GAME_STORY = {
     {
       id: 16,
       name: "我",
-      emotion: "normal",
-      text: "妈，微信有投诉的功能，我教你！直接把它的号给封了！",
+      emotion: "surprised",
+      text: "妈，以后遇到这种事情，一定要擦亮眼睛仔细辨别呀！骗子就是看准了你们喜欢相信熟人这一点才冒充熟人行骗的！",
       nextId: 17,
     },
     {
       id: 17,
-      name: "系统",
-      emotion: "thinking",
-      text: "（最后一步：再次点击【手机图标】，对这个假张大姐进行【投诉】！）",
-      customAction: "startReport",
+      name: "我",
+      emotion: "surprised",
+      text: "骗子就是看准了你们喜欢相信熟人这一点才会冒充熟人行骗的！",
+      nextId: 18,
     },
+    {
+      id: 18,
+      name: "妈妈",
+      emotion: "normal",
+      text: "吃一堑长一智啊！这次幸亏有你，要不然我肯定上当了！",
+      nextId: 19,
+    },
+    {
+      id: 19,
+      name: "妈妈",
+      emotion: "normal",
+      text: "以后我肯定会好好注意的！",
+      customAction: "gameWin", // 游戏胜利，不再继续
+    },
+    // id:16 和 id:17 已删除，因为不再需要投诉环节
   ],
 
   // === 微信群聊数据 ===

@@ -187,7 +187,12 @@ export const useGameStore = defineStore("game", {
       const line = GAME_STORY.scriptLines.find((l) => l.id === id);
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
       else if (line?.customAction === "startLevel3") this.gameLevel = 3;
-      else if (line?.customAction === "startReport") this.gameLevel = 4;
+      // else if (line?.customAction === "startReport") this.gameLevel = 4;
+      else if (line?.customAction === "gameWin") {
+        // 胜利，弹出弹窗
+        this.setGameResult("win");
+        // 不继续推进，因为 isGameOver 已为 true
+      }
     },
 
     togglePhone() {
