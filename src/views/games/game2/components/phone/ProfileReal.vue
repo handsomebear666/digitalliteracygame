@@ -49,7 +49,7 @@
     <div class="action-card">
       <div class="action-btn border-bottom">
         <img
-          src="@/views/games/game2/assets/img/icon_message.png"
+          src="@/views/games/game2/assets/img/icon_message.svg"
           class="action-icon"
           alt=""
         />
@@ -57,7 +57,7 @@
       </div>
       <div class="action-btn">
         <img
-          src="@/views/games/game2/assets/img/icon_video_call.png"
+          src="@/views/games/game2/assets/img/icon_video_call.svg"
           class="action-icon"
           alt=""
         />
