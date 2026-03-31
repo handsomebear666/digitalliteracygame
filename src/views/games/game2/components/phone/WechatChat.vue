@@ -128,12 +128,12 @@ const openGroupDetail = () => store.navigatePhone("group-detail");
   cursor: pointer;
 }
 .icon-back {
-  width: 23px;
-  height: 20px;
+  width: 18px;
+  height: auto;
 }
 .icon-dots {
-  width: 35px;
-  height: 28px;
+  width: 25px;
+  height: auto;
 }
 .chat-container {
   flex: 1;

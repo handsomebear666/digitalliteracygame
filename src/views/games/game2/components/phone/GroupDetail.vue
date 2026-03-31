@@ -221,12 +221,12 @@ const toggle = (key) => {
   display: inline-block;
 }
 .icon-back {
-  width: 17px;
+  width: 18px;
   height: auto;
   /* clip-path: polygon(100% 0, 0 50%, 100% 100%); */
 } /* 纯CSS占位箭头 */
 .icon-search {
-  width: 20px;
+  width: 22px;
   height: auto;
   border-radius: 50%;
   /* border: 2px solid #333; */
