@@ -37,6 +37,7 @@
           type="text"
           class="welfare-input code-input"
           placeholder="请输入短信验证码"
+          v-model="verificationCode"
         />
         <button
           class="get-code-btn"
@@ -45,10 +46,7 @@
           重新获取 (59s)
         </button>
       </div>
-      <button
-        class="submit-welfare-btn"
-        @click="store.showToast('请先输入验证码！')"
-      >
+      <button class="submit-welfare-btn" @click="handleSubmit">
         立即免费领取
       </button>
     </div>
@@ -56,10 +54,33 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import iconClose from "@/views/games/game2/assets/img/icon_close.svg";
 import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
+
 const store = useGameStore();
+const verificationCode = ref("");
+
+const handleSubmit = () => {
+  // 如果已经通关第二关，不再处理验证码输入（防止重复触发）
+  if (store.level2Solved) {
+    store.showToast("活动已结束，请返回聊天", false);
+    return;
+  }
+
+  // 检查验证码
+  if (verificationCode.value === "882931") {
+    // 正确验证码 -> 游戏失败
+    store.setGameResult(
+      "lose",
+      "刚刚的验证码是修改妈妈的支付密码，妈妈的钱被盗刷了！",
+    );
+  } else {
+    // 错误验证码 -> 红色提示
+    store.showToast("❌ 验证码输入错误", true);
+  }
+};
 </script>
 
 <style scoped>
@@ -158,7 +179,6 @@ const store = useGameStore();
   margin-bottom: 15px;
   color: #666;
   background: #fcfcfc;
-  /* 💥 核心修复：让 padding 向内计算，绝对不会撑破 100% 的宽度 */
   box-sizing: border-box;
 }
 .code-group {
@@ -179,6 +199,7 @@ const store = useGameStore();
   border-radius: 6px;
   font-size: 14px;
   white-space: nowrap;
+  cursor: pointer;
 }
 .submit-welfare-btn {
   width: 100%;
