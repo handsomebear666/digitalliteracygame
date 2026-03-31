@@ -112,10 +112,7 @@
       <div class="section">
         <div class="list-item">
           <span class="item-label">我在群里的昵称</span>
-          <div class="item-value-wrap">
-            <span class="item-value"></span>
-            <span class="arrow-right"></span>
-          </div>
+          <span class="arrow-right"></span>
         </div>
         <div class="list-item no-border">
           <span class="item-label">显示群成员昵称</span>
@@ -244,7 +241,7 @@ const toggle = (key) => {
 .icon-qrcode {
   width: 20px;
   height: 20px;
-  background: #b2b2b2;
+  /* background: #b2b2b2; */
   margin-right: 8px;
 }
 
