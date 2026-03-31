@@ -54,13 +54,23 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import iconClose from "@/views/games/game2/assets/img/icon_close.svg";
 import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
 
 const store = useGameStore();
 const verificationCode = ref("");
+
+// 当第二关界面重新激活时，清空输入框
+watch(
+  () => [store.showPhoneSystem, store.activePhonePage],
+  ([show, page]) => {
+    if (show && page === "welfare") {
+      verificationCode.value = "";
+    }
+  },
+);
 
 const handleSubmit = () => {
   // 如果已经通关第二关，不再处理验证码输入（防止重复触发）
@@ -74,11 +84,11 @@ const handleSubmit = () => {
     // 正确验证码 -> 游戏失败
     store.setGameResult(
       "lose",
-      "刚刚的验证码是在修改妈妈的支付密码，妈妈的钱被盗刷了！",
+      "刚刚的验证码是修改妈妈的支付密码，妈妈的钱被盗刷了！",
     );
   } else {
-    // 错误验证码
-    store.showToast("❌ 验证码输入错误，请重新输入！", false);
+    // 错误验证码 -> 红色提示
+    store.showToast("❌ 验证码输入错误", true);
   }
 };
 </script>
