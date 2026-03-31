@@ -292,7 +292,10 @@ const selectOption = (opt) => {
   background-color: rgba(255, 253, 245, 0.98);
   border: 4px solid #a8c989;
   border-radius: 20px;
-  padding: 20px 25px 8px 25px;
+
+  /* 💥 核心修复：取消原本的 20px 上边距和 8px 下边距，改为完全对称的上下 16px */
+  padding: 16px 25px;
+
   cursor: pointer;
   display: block;
   box-shadow: 0 8px 24px rgba(168, 201, 137, 0.15);
