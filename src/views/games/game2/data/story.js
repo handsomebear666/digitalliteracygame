@@ -13,8 +13,6 @@ import bgmMp3 from "@/views/games/game2/assets/audio/bgm.mp3";
 import clickMp3 from "@/views/games/game2/assets/audio/click.mp3";
 import newsBannerImg from "@/views/games/game2/assets/img/news_banner.png";
 import defaultBgImg from "@/views/games/game2/assets/img/default-bg.png";
-// 还有其他图片：oa_icon.png, icon_back.svg, icon_dots.svg, icon_voice.svg, icon_emoji.svg, icon_plus.svg, icon_close.svg, post_cover.png, etc.
-// 根据组件中的实际使用情况，逐一导入。
 
 export const ASSETS = {
   AVATARS: {
@@ -82,7 +80,8 @@ export const GAME_STORY = {
       id: 4,
       name: "妈妈",
       emotion: "sad",
-      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！",
+      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！\n【游戏结束：未能阻止风险】",
+      // 删除 options 数组，使其成为纯文本结束行
     },
     {
       id: 5,

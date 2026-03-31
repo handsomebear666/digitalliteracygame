@@ -22,23 +22,23 @@ export const useGameStore = defineStore("game", {
     showSmsPopup: false,
     showActionSheet: false,
     isShaking: false,
-    showEndScreen: false, // 保留但不再使用
+    showEndScreen: false,
     toastMsg: "",
     toastBgColor: "#07c160",
     foundFlawsL1: [],
     foundFlawsL3: [],
-    gameResult: null, // 'win' 或 'lose'
+    gameResult: null,
     gameResultMessage: "",
+    isGameOver: false, // 新增游戏结束标志
   }),
 
   actions: {
-    // 设置游戏结果
     setGameResult(result, message = "") {
       this.gameResult = result;
       this.gameResultMessage = message;
+      this.isGameOver = true; // 游戏结束，禁用交互
     },
 
-    // 重置游戏状态（用于 replay）
     resetGame() {
       this.gameLevel = 1;
       this.level2Solved = false;
@@ -55,6 +55,7 @@ export const useGameStore = defineStore("game", {
       this.foundFlawsL3 = [];
       this.gameResult = null;
       this.gameResultMessage = "";
+      this.isGameOver = false;
       if (bgmInstance) {
         bgmInstance.pause();
         bgmInstance.currentTime = 0;
@@ -63,7 +64,6 @@ export const useGameStore = defineStore("game", {
       this.tryPlayBGM();
     },
 
-    // 统一管理定时器
     setGameTimeout(callback, delay) {
       const id = setTimeout(() => {
         callback();
@@ -107,13 +107,14 @@ export const useGameStore = defineStore("game", {
 
     // === 对话与进度推进 ===
     nextLine(id) {
+      if (this.isGameOver) return; // 游戏已结束，忽略所有推进
+
       this.currentLineId = id;
       const line = GAME_STORY.scriptLines.find((l) => l.id === id);
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
       else if (line?.customAction === "startLevel3") this.gameLevel = 3;
       else if (line?.customAction === "startReport") this.gameLevel = 4;
 
-      // 检查是否是失败结局（id=4）
       if (id === 4) {
         this.setGameResult(
           "lose",
@@ -222,14 +223,13 @@ export const useGameStore = defineStore("game", {
       }
     },
 
-    // 投诉成功 -> 游戏胜利
     doReport() {
+      if (this.isGameOver) return;
       this.showActionSheet = false;
       this.showToast("✅ 投诉提交成功！微信安全中心已介入！");
       this.setGameTimeout(() => {
         this.showPhoneSystem = false;
         this.showHintBtn = false;
-        // 替换原来的 showEndScreen = true 为设置胜利
         this.setGameResult("win");
       }, 2000);
     },

@@ -101,14 +101,12 @@ const showFailPopup = (message) => {
 const handleResultAction = (action) => {
   showResultPopup.value = false;
   if (action === "replay") {
-    // 重置游戏并刷新页面（简单粗暴但可靠）
     location.reload();
   } else if (action === "home") {
     store.stopAllAudio();
     router.push("/");
   } else if (action === "cards") {
     store.stopAllAudio();
-    // 跳转知识卡片页面（game2 的卡片页面路径，可根据实际调整）
     router.push(`/game/game2/cards`);
   }
 };
@@ -126,8 +124,6 @@ watch(
 );
 
 // ========== 原有生命周期和计算属性 ==========
-const reloadGame = () => location.reload();
-
 onMounted(() => {
   const fromHome = sessionStorage.getItem("fromHome");
   if (!fromHome) {
@@ -135,6 +131,10 @@ onMounted(() => {
     return;
   }
   sessionStorage.removeItem("fromHome");
+
+  // 每次进入游戏都重置状态（确保全新开始）
+  store.resetGame();
+
   store.tryPlayBGM();
   window.addEventListener("beforeunload", handleBeforeUnload);
 });
