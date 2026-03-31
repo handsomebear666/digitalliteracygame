@@ -232,6 +232,7 @@ const store = useGameStore();
   height: 20px;
   margin-right: 8px; /* 图标与文字之间的间距 */
   object-fit: contain;
+  color: #576b95;
 }
 
 /* 破绽动画逻辑 */
