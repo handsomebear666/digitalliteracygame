@@ -2,7 +2,7 @@
   <div class="wechat-page">
     <div class="wechat-header">
       <div class="header-left" @click="store.navigatePhone('chat')">
-        <img src="" class="svg-icon icon-back" alt="back" />
+        <img :src="iconBack" class="svg-icon icon-back" alt="back" />
       </div>
       <div class="header-title">
         聊天信息(500)
