@@ -43,7 +43,7 @@
         <div class="list-item">
           <span class="item-label">群二维码</span>
           <div class="item-value-wrap">
-            <img src="" class="svg-icon icon-qrcode" alt="qr" />
+            <img :src="iconQrcode" class="svg-icon icon-qrcode" alt="qr" />
             <span class="arrow-right"></span>
           </div>
         </div>
@@ -52,11 +52,7 @@
             <span class="item-label">群公告</span>
             <span class="arrow-right"></span>
           </div>
-          <div class="notice-content truncate-text-2">
-            4️⃣月1️⃣号到货团品 —<br />
-            🌈团品一，🔥🔥🔥云南高山L25花香蓝莓🫐 又脆又甜又香15➕的
-            ，💥💥💥秒杀💰4️⃣3️⃣元🉐2️⃣罐，8️⃣...
-          </div>
+          <div class="notice-content truncate-text-2"></div>
         </div>
         <div class="list-item no-border">
           <span class="item-label">备注</span>
@@ -117,7 +113,7 @@
         <div class="list-item">
           <span class="item-label">我在群里的昵称</span>
           <div class="item-value-wrap">
-            <span class="item-value">小熊佩琪</span>
+            <span class="item-value"></span>
             <span class="arrow-right"></span>
           </div>
         </div>
@@ -160,6 +156,8 @@ import { reactive } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
 import iconSearch from "@/views/games/game2/assets/img/icon_search.svg";
+import iconQrcode from "@/views/games/game2/assets/img/icon_qrcode.svg";
+
 const store = useGameStore();
 
 // 模拟截图中的开关状态

@@ -2,8 +2,8 @@
   <div class="wechat-page">
     <div class="search-header">
       <div class="search-bar-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" class="search-input" value="张" readonly />
+        <img :src="iconSearch" class="search-icon" />
+        <input type="text" class="search-input" value="张大姐" readonly />
       </div>
       <div class="search-back" @click="store.navigatePhone('chat')">取消</div>
     </div>
@@ -38,6 +38,7 @@
 <script setup>
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import auntZhangImg from "@/views/games/game2/assets/img/aunt_zhang.png";
+import iconSearch from "@/views/games/game2/assets/img/icon_search.svg";
 
 const store = useGameStore();
 </script>
