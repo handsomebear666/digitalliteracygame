@@ -26,7 +26,11 @@
         <div v-if="store.showPhoneSystem" class="wechat-system-wrapper">
           <WechatChat v-show="store.activePhonePage === 'chat'" />
           <OfficialAccount v-show="store.activePhonePage.startsWith('oa-')" />
-          <PhishingForm v-show="store.activePhonePage === 'welfare'" />
+          <!-- 将原来的 v-show 改为 v-if，并添加 key 确保重新创建 -->
+          <PhishingForm
+            v-if="store.activePhonePage === 'welfare'"
+            :key="store.activePhonePage"
+          />
           <ProfileFake v-show="store.activePhonePage === 'fake-profile'" />
           <ProfileReal v-show="store.activePhonePage === 'real-profile'" />
           <FakeMoments v-show="store.activePhonePage === 'fake-moments'" />
