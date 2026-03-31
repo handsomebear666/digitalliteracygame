@@ -82,8 +82,7 @@ export const GAME_STORY = {
       id: 4,
       name: "妈妈",
       emotion: "sad",
-      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！\n【游戏结束：未能阻止风险】",
-      options: [{ text: "回到刚才", nextId: 1 }],
+      text: "唉，你这孩子就是太谨慎，名额有限，我先点了啊！",
     },
     {
       id: 5,
