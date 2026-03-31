@@ -1,6 +1,10 @@
 // src/composables/useGameProgress.js
 import { ref, watch } from "vue";
 
+// 💥 修复 1：在顶部用 import 将图片明确引入进来（路径根据你的实际情况调整）
+import game1TitleImg from "@/assets/game1_title.png";
+import game2TitleImg from "@/assets/game2_title.png";
+
 export function useGameProgress() {
   const defaultGames = [
     {
@@ -8,10 +12,9 @@ export function useGameProgress() {
       title: "家庭保卫战",
       icon: "",
       time: "3 分钟",
-      // 💥 图片空链，填入链接就会自动替换掉上面的文字/Emoji
-      titleImg: "src/assets/game1_title.png",
+      // 💥 修复 2：这里不要写写死的字符串，直接使用上面引入的变量名
+      titleImg: game1TitleImg,
       iconImg: "",
-      // 💥 利用 \n 实现换行
       desc: "今天是周末，你正准备睡个懒觉，突然手机狂震，家族群里消息像连珠炮一样弹出来——你必须在他们受骗前，逐一击破这些骗局。",
       status: "active",
       tags: ["AI图片识别", "钓鱼网站辨认", "共享屏幕诈骗"],
@@ -37,7 +40,8 @@ export function useGameProgress() {
       title: "真假张阿姨",
       icon: "",
       time: "5 分钟",
-      titleImg: "src/assets/game2_title.png",
+      // 💥 修复 2：使用变量
+      titleImg: game2TitleImg,
       iconImg: "",
       desc: "本是家长里短的小区业主群，藏着冒充张阿姨的骗子，虚假推文藏着钓鱼陷阱,快来帮妈妈识破骗局！",
       status: "active",
@@ -74,7 +78,6 @@ export function useGameProgress() {
       time: "",
       titleImg: "",
       iconImg: "",
-      // 💥 特殊标识：告诉 UI 隐藏时间、标签、卡片按钮
       comingSoon: true,
       desc: "更多精彩的数字素养挑战正在加紧开发中，\n感谢您的关注！",
       status: "locked",
