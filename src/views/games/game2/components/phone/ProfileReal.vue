@@ -22,9 +22,9 @@
           张大姐
           <i class="fas fa-female gender-icon-pink"></i>
         </div>
-        <div class="profile-sub">昵称：张大姐</div>
-        <div class="profile-sub">微信号：zhang_dj888</div>
-        <div class="profile-sub">地区：山东</div>
+        <div class="profile-sub">昵称：张翠芳</div>
+        <div class="profile-sub">微信号：zhang_cf888</div>
+        <div class="profile-sub">地区：广西桂林</div>
       </div>
     </div>
 
