@@ -1,7 +1,7 @@
 <template>
   <div class="wechat-page">
     <div class="wechat-header">
-      <div class="header-left" @click="store.returnToPrevious()">
+      <div class="header-left" @click="store.navigatePhone('chat')">
         <img :src="iconBack" class="svg-icon icon-back" alt="back" />
       </div>
       <div class="header-title">

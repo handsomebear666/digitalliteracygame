@@ -5,7 +5,9 @@
         <img :src="iconSearch" class="search-icon" />
         <input type="text" class="search-input" value="张大姐" readonly />
       </div>
-      <div class="search-back" @click="store.returnToPrevious()">取消</div>
+      <div class="search-back" @click="store.navigatePhone('group-detail')">
+        取消
+      </div>
     </div>
 
     <div class="search-list">
