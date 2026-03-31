@@ -352,6 +352,8 @@ const selectOption = (opt) => {
 .dialogue-bubble.thought-style .dialogue-text {
   color: #718096 !important;
   font-style: italic;
-  text-align: center;
+  text-align: center !important; /* 强制水平居中 */
+  display: block; /* 确保块级元素 */
+  margin: 0 auto; /* 兼容旧浏览器 */
 }
 </style>
