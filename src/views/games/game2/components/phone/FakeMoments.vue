@@ -28,8 +28,7 @@
         @click="store.triggerL3Debunk('moments')"
       >
         <div class="post-date">
-          <span class="day">7</span>
-          <span class="month">23日</span>
+          <span class="day">昨天</span>
         </div>
 
         <div class="post-card">
@@ -40,28 +39,7 @@
                 >http://fake-welfare-phishing.com</span
               >
             </div>
-            <div class="p-time">昨天</div>
 
-            <div class="comment-placeholder"></div>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="year">2022年</h2>
-
-      <div class="post-group">
-        <div class="post-date">
-          <span class="day">8</span>
-          <span class="month">15日</span>
-        </div>
-
-        <div class="post-card">
-          <div class="post-text-content">
-            <div class="post-title">
-              夏日狂欢节，好礼送不停！点击参与活动 >>>
-              <span class="highlight-link">公众号：每日福利君</span>
-            </div>
-            <div class="p-time">前天</div>
             <div class="comment-placeholder"></div>
           </div>
         </div>
@@ -134,6 +112,7 @@ const store = useGameStore();
   font-weight: bold;
   margin-right: 15px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
 }
 .m-avatar {
   width: 64px;
@@ -144,6 +123,7 @@ const store = useGameStore();
 }
 .moments-body {
   padding: 0; /* 移除内边距，使帖子顶格 */
+  margin-top: 50px;
 }
 .year {
   padding: 20px 15px 10px;
