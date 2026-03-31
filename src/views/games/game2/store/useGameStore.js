@@ -27,9 +27,15 @@ export const useGameStore = defineStore("game", {
     toastBgColor: "#07c160",
     foundFlawsL1: [],
     foundFlawsL3: [],
+    gameResult: null, // 'win' 或 'lose'
+    gameResultMessage: "",
   }),
 
   actions: {
+    setGameResult(result, message = "") {
+      this.gameResult = result;
+      this.gameResultMessage = message;
+    },
     // 统一管理定时器
     setGameTimeout(callback, delay) {
       const id = setTimeout(() => {
