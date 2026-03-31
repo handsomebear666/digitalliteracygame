@@ -74,11 +74,11 @@ const handleSubmit = () => {
     // 正确验证码 -> 游戏失败
     store.setGameResult(
       "lose",
-      "刚刚的验证码是修改妈妈的支付密码，妈妈的钱被盗刷了！",
+      "刚刚的验证码是在修改妈妈的支付密码，妈妈的钱被盗刷了！",
     );
   } else {
-    // 错误验证码 -> 红色提示
-    store.showToast("❌ 验证码输入错误", true);
+    // 错误验证码
+    store.showToast("❌ 验证码输入错误，请重新输入！", false);
   }
 };
 </script>
