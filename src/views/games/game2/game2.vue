@@ -57,7 +57,7 @@ import { useRouter } from "vue-router";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
 import ResultPopup from "@/views/games/game2/components/overlays/ResultPopup.vue";
-
+import { useGameProgress } from "@/composables/useGameProgress";
 // 组件导入
 import Character from "@/views/games/game2/components/game/Character.vue";
 import PhoneIcon from "@/views/games/game2/components/game/PhoneIcon.vue";
@@ -77,7 +77,7 @@ import ActionMenu from "@/views/games/game2/components/phone/ActionMenu.vue";
 
 const store = useGameStore();
 const router = useRouter();
-
+const { completeLevel } = useGameProgress();
 // 弹窗控制
 const showResultPopup = ref(false);
 const resultData = ref({ type: "", title: "", text: "" });
@@ -127,6 +127,7 @@ watch(
   () => store.gameResult,
   (newVal) => {
     if (newVal === "win") {
+      completeLevel(1); // 标记游戏2通关
       showVictoryPopup();
     } else if (newVal === "lose") {
       showFailPopup(store.gameResultMessage);
