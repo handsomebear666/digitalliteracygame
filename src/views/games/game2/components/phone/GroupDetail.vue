@@ -432,31 +432,33 @@ const toggle = (key) => {
 
 /* 纯 CSS iOS/微信 风格开关 */
 .ios-switch {
-  width: 52px;
-  height: 32px;
-  border-radius: 16px;
+  width: 32px; /* 原 52px × 0.6 ≈ 31.2 → 32px */
+  height: 20px; /* 原 32px × 0.6 = 19.2 → 20px */
+  border-radius: 10px; /* 原 16px × 0.6 = 9.6 → 10px */
   background: #e5e5e5;
   position: relative;
   transition: background 0.3s;
   cursor: pointer;
 }
+
 .ios-switch::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 28px;
-  height: 28px;
+  top: 0px; /* 原 2px × 0.6 ≈ 1.2 → 1px */
+  left: 0px; /* 同上 */
+  width: 20px; /* 原 28px × 0.6 = 16.8 → 17px */
+  height: 20px;
   background: #ffffff;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
 }
+
+.ios-switch.active::after {
+  transform: translateX(13px); /* 原 20px × 0.6 = 12px */
+}
 .ios-switch.active {
   background: #07c160; /* 微信绿 */
-}
-.ios-switch.active::after {
-  transform: translateX(20px);
 }
 
 /* 底部操作按钮 */
