@@ -1,7 +1,6 @@
 // src/composables/useGameProgress.js
 import { ref, watch } from "vue";
 
-// 💥 修复 1：在顶部用 import 将图片明确引入进来（路径根据你的实际情况调整）
 import game1TitleImg from "@/assets/game1_title.png";
 import game2TitleImg from "@/assets/game2_title.png";
 
@@ -12,7 +11,6 @@ export function useGameProgress() {
       title: "家庭保卫战",
       icon: "",
       time: "3 分钟",
-      // 💥 修复 2：这里不要写写死的字符串，直接使用上面引入的变量名
       titleImg: game1TitleImg,
       iconImg: "",
       desc: "今天是周末，你正准备睡个懒觉，突然手机狂震，家族群里消息像连珠炮一样弹出来——你必须在他们受骗前，逐一击破这些骗局。",
@@ -40,7 +38,6 @@ export function useGameProgress() {
       title: "真假张阿姨",
       icon: "",
       time: "5 分钟",
-      // 💥 修复 2：使用变量
       titleImg: game2TitleImg,
       iconImg: "",
       desc: "本是家长里短的小区业主群，藏着冒充张阿姨的骗子，虚假推文藏着钓鱼陷阱,快来帮妈妈识破骗局！",
@@ -92,6 +89,13 @@ export function useGameProgress() {
     }
   }
 
+  // 确保所有 “敬请期待” 的游戏都是 locked 状态
+  initialGames.forEach((game) => {
+    if (game.comingSoon) {
+      game.status = "locked";
+    }
+  });
+
   const games = ref(initialGames);
 
   watch(
@@ -104,8 +108,13 @@ export function useGameProgress() {
 
   const completeLevel = (index) => {
     games.value[index].status = "completed";
-    if (index + 1 < games.value.length) {
-      games.value[index + 1].status = "active";
+    const nextIndex = index + 1;
+    if (nextIndex < games.value.length) {
+      const nextGame = games.value[nextIndex];
+      // 如果下一个游戏是“敬请期待”，则不自动解锁
+      if (!nextGame.comingSoon) {
+        nextGame.status = "active";
+      }
     }
   };
 
