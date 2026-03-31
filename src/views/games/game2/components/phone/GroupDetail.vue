@@ -221,13 +221,13 @@ const toggle = (key) => {
   display: inline-block;
 }
 .icon-back {
-  width: 12px;
-  height: 20px;
-  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  width: 17px;
+  height: auto;
+  /* clip-path: polygon(100% 0, 0 50%, 100% 100%); */
 } /* 纯CSS占位箭头 */
 .icon-search {
   width: 20px;
-  height: 20px;
+  height: auto;
   border-radius: 50%;
   /* border: 2px solid #333; */
   background: transparent;
@@ -432,7 +432,7 @@ const toggle = (key) => {
 
 /* 纯 CSS iOS/微信 风格开关 */
 .ios-switch {
-  width: 52px;
+  width: 36px;
   height: 32px;
   border-radius: 16px;
   background: #e5e5e5;
