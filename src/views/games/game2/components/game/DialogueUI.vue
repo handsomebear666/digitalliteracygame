@@ -74,7 +74,7 @@ onUnmounted(() => {
   if (typingTimer) clearInterval(typingTimer);
 });
 
-// === 核心升级：带智能分词的高度测算 ===
+// 智能分词
 const splitTextDynamically = async (text) => {
   await nextTick();
   const el = textEl.value;
@@ -151,7 +151,6 @@ const playPage = () => {
       i++;
       const visiblePart = currentText.substring(0, i);
       const hiddenPart = currentText.substring(i);
-      // 💥 魔法1：用透明字占位，一出场就固定大小，绝不跳动！
       displayedText.value = `<span>${visiblePart}<span style="opacity: 0;">${hiddenPart}</span></span>`;
     } else {
       clearInterval(typingTimer);
@@ -165,7 +164,6 @@ const startLine = async () => {
   clearInterval(typingTimer);
   displayedText.value = "";
 
-  // 💥 魔法2：强制剔除剧本中看不见的回车符，防止它把文字往下挤
   const cleanText = currentLine.value.text.trim();
   textPages.value = await splitTextDynamically(cleanText);
   currentPageIdx.value = 0;
@@ -183,11 +181,12 @@ watch(
 );
 
 const handleContainerClick = () => {
+  if (store.isGameOver) return; // 游戏结束，禁止交互
+
   store.tryPlayBGM();
 
   if (isTyping.value) {
     clearInterval(typingTimer);
-    // 💥 配合透明魔法的快速跳过显示
     displayedText.value = `<span>${textPages.value[currentPageIdx.value]}</span>`;
     isTyping.value = false;
     return;
@@ -282,7 +281,6 @@ const selectOption = (opt) => {
   background-color: rgba(255, 253, 245, 0.98);
   border: 4px solid #a8c989;
   border-radius: 20px;
-  /* 普通对话框保留原始的内边距 */
   padding: 20px 25px 8px 25px;
   cursor: pointer;
   display: block;
@@ -328,12 +326,9 @@ const selectOption = (opt) => {
     transform: translateY(4px);
   }
 }
-
-/* 💥 魔法3：独白模式专属优化 */
 .dialogue-bubble.thought-style {
   border-color: #cbd5e0;
   background-color: rgba(255, 255, 255, 0.9);
-  /* 取消头重脚轻的内边距，完全对称 */
   padding: 16px 25px;
 }
 .dialogue-bubble.thought-style .name-tag {
@@ -343,7 +338,6 @@ const selectOption = (opt) => {
   color: #718096 !important;
   font-style: italic;
   text-align: center;
-  /* 开启 Flex 魔法，让整个文字块在 3em 的高度内绝对垂直居中！ */
   display: flex;
   align-items: center;
   justify-content: center;
