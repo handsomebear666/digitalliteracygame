@@ -149,15 +149,22 @@ const splitTextDynamically = async (text) => {
 
 const playPage = () => {
   clearInterval(typingTimer);
-  displayedText.value = "";
   isTyping.value = true;
   let i = 0;
   const currentText = textPages.value[currentPageIdx.value] || "";
 
+  // 💥 核心魔法：第一帧就把所有字放进去，但设为全透明占位。
+  // 这样浏览器会瞬间排版好它是一行还是两行，并且完美居中！
+  displayedText.value = `<span style="opacity: 0;">${currentText}</span>`;
+
   typingTimer = setInterval(() => {
     if (i < currentText.length) {
-      displayedText.value += currentText.charAt(i);
       i++;
+      // 把文字切成两半：左边是看得见的，右边是透明占位的
+      const visiblePart = currentText.substring(0, i);
+      const hiddenPart = currentText.substring(i);
+
+      displayedText.value = `${visiblePart}<span style="opacity: 0;">${hiddenPart}</span>`;
     } else {
       clearInterval(typingTimer);
       isTyping.value = false;

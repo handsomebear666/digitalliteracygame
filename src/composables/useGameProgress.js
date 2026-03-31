@@ -61,18 +61,6 @@ export function useGameProgress() {
     },
     {
       id: "game3",
-      title: "流言粉碎机",
-      icon: "🗞️",
-      time: "4 分钟",
-      titleImg: "",
-      iconImg: "",
-      desc: "运用工具和逻辑，\n找出惊悚标题和AI图片中的漏洞。",
-      status: "locked",
-      tags: ["流言粉碎机", "假新闻识别", "AI鉴真"],
-      cards: [],
-    },
-    {
-      id: "game4",
       title: "敬请期待...",
       icon: "🔒",
       time: "",
