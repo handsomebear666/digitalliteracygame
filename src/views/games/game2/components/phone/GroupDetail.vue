@@ -432,7 +432,7 @@ const toggle = (key) => {
 
 /* 纯 CSS iOS/微信 风格开关 */
 .ios-switch {
-  width: 36px;
+  width: 52px;
   height: 32px;
   border-radius: 16px;
   background: #e5e5e5;
