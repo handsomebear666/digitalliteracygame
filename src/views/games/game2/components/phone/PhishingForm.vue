@@ -158,6 +158,8 @@ const store = useGameStore();
   margin-bottom: 15px;
   color: #666;
   background: #fcfcfc;
+  /* 💥 核心修复：让 padding 向内计算，绝对不会撑破 100% 的宽度 */
+  box-sizing: border-box;
 }
 .code-group {
   display: flex;
