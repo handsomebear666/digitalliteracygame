@@ -231,6 +231,7 @@ const toggle = (key) => {
   border-radius: 50%;
   /* border: 2px solid #333; */
   background: transparent;
+  color: #191919;
 }
 .icon-mute-bell {
   width: 14px;
