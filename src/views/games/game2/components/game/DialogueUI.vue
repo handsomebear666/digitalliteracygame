@@ -287,22 +287,21 @@ const selectOption = (opt) => {
   border-color: #f7d76a !important;
 }
 
+/* 💥 核心修复 1：基础气泡完全对称的内边距 */
 .dialogue-bubble {
   position: relative;
   background-color: rgba(255, 253, 245, 0.98);
   border: 4px solid #a8c989;
   border-radius: 20px;
-
-  /* 💥 核心修复：取消原本的 20px 上边距和 8px 下边距，改为完全对称的上下 16px */
-  padding: 16px 25px;
-
+  padding: 18px 25px; /* 上下左右完美对称，告别头重脚轻 */
   cursor: pointer;
   display: block;
   box-shadow: 0 8px 24px rgba(168, 201, 137, 0.15);
 }
+
 .name-tag {
   position: absolute;
-  top: -18px;
+  top: -18px; /* 因为 padding 对称了，标签位置刚好卡在边框上 */
   left: 15px;
   background-color: #f7d76a;
   color: #5a4634;
@@ -314,23 +313,23 @@ const selectOption = (opt) => {
   z-index: 10;
 }
 
-/* 💥 更新的对话文字层 */
+/* 💥 核心修复 2：文字容器的 Flex 垂直居中魔法 */
 .dialogue-text {
   color: #5a4634 !important;
   font-size: 1.1rem;
   line-height: 1.5;
   height: 3em; /* 绝对锁死两行高度 */
   overflow: hidden;
-  margin-top: 0;
+  margin: 0;
   z-index: 5;
 
-  /* 使用 flex 让内部文字块绝对垂直居中 */
+  /* 使用纵向 Flex，将内部的文字块整体居中 */
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center; /* 绝对垂直居中 */
+  align-items: flex-start; /* 普通对话靠左对齐 */
 }
 
-/* 💥 测算专用的隐藏层，不影响正式视图 */
 .measure-el {
   position: absolute !important;
   visibility: hidden !important;
@@ -340,11 +339,10 @@ const selectOption = (opt) => {
   display: block !important;
 }
 
-/* 💥 文字包装层 */
 .text-inner {
   width: 100%;
   margin: 0;
-  white-space: pre-wrap; /* 允许换行符正常渲染 */
+  white-space: pre-wrap;
 }
 
 .next-indicator {
@@ -366,22 +364,21 @@ const selectOption = (opt) => {
   }
 }
 
-/* --- 取消头重脚轻，赋予完全对称的上下内边距 --- */
+/* --- 独白模式样式 --- */
 .dialogue-bubble.thought-style {
   border-color: #cbd5e0;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 16px 25px; /* 上下左右完美对称 */
+  /* 独白气泡保持同样的完美对称边距 */
+  padding: 18px 25px;
 }
 .dialogue-bubble.thought-style .name-tag {
   display: none !important;
 }
-
-/* 独白文本居中对齐 */
 .dialogue-bubble.thought-style .dialogue-text {
-  justify-content: center;
+  align-items: center; /* 独白模式下，文字块整体水平居中 */
 }
 .dialogue-bubble.thought-style .text-inner {
-  text-align: center;
+  text-align: center; /* 独白内部文字水平居中 */
   color: #718096 !important;
   font-style: italic;
 }
