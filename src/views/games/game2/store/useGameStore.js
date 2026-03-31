@@ -261,11 +261,12 @@ export const useGameStore = defineStore("game", {
     triggerL3Debunk(type) {
       if (this.gameLevel < 3 || this.foundFlawsL3.includes(type)) return;
       this.foundFlawsL3.push(type);
-      if (type === "info") this.showToast("【破绽1】地区安道尔，典型的黑号！");
-      if (type === "moments")
-        this.showToast("【破绽2】朋友圈只有广告，没有生活痕迹！");
+      if (type === "info") this.showToast("地区安道尔，典型的黑号！");
+      if (type === "moments") this.showToast("朋友圈只有广告，没有生活痕迹！");
       if (type === "add")
-        this.showToast("【破绽3】竟然还要‘添加到通讯录’？骗子无疑！");
+        this.showToast(
+          "竟然还要添加到通讯录？真正的张大姐明明就是妈妈的好友！这是骗子无疑！",
+        );
       if (type === "real") {
         this.showToast("这才是真正的张大姐！");
         this.activePhonePage = "real-profile";
