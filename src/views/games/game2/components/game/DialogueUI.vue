@@ -238,7 +238,7 @@ const selectOption = (opt) => {
   left: 0;
   width: 100%;
   padding: 0 15px;
-  z-index: 10;
+  z-index: 30;
   pointer-events: none;
   box-sizing: border-box;
 }
