@@ -9,7 +9,7 @@ export function useGameProgress() {
       icon: "",
       time: "3 分钟",
       // 💥 图片空链，填入链接就会自动替换掉上面的文字/Emoji
-      titleImg: "@/assets/game1_title.png",
+      titleImg: "src/assets/game1_title.png",
       iconImg: "",
       // 💥 利用 \n 实现换行
       desc: "今天是周末，你正准备睡个懒觉，突然手机狂震，家族群里消息像连珠炮一样弹出来——你必须在他们受骗前，逐一击破这些骗局。",
@@ -37,7 +37,7 @@ export function useGameProgress() {
       title: "真假张阿姨",
       icon: "",
       time: "5 分钟",
-      titleImg: "@/assets/game2_title.png",
+      titleImg: "src/assets/game2_title.png",
       iconImg: "",
       desc: "本是家长里短的小区业主群，藏着冒充张阿姨的骗子，虚假推文藏着钓鱼陷阱,快来帮妈妈识破骗局！",
       status: "active",
