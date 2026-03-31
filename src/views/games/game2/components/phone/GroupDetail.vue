@@ -1,14 +1,14 @@
 <template>
   <div class="wechat-page">
     <div class="wechat-header">
-      <div class="header-left" @click="store.navigatePhone('chat')">
+      <div class="header-left" @click="store.returnToPrevious()">
         <img :src="iconBack" class="svg-icon icon-back" alt="back" />
       </div>
       <div class="header-title">
         聊天信息(492)
         <img src="" class="svg-icon icon-mute-bell" alt="mute" />
       </div>
-      <div class="header-right">
+      <div class="header-right" @click="store.navigatePhone('search')">
         <img :src="iconSearch" class="svg-icon icon-search" alt="search" />
       </div>
     </div>
@@ -160,7 +160,6 @@ import iconQrcode from "@/views/games/game2/assets/img/icon_qrcode.svg";
 
 const store = useGameStore();
 
-// 模拟截图中的开关状态
 const settings = reactive({
   muteNotif: true,
   collapseChat: false,

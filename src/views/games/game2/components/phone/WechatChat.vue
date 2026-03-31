@@ -5,7 +5,7 @@
         <img :src="iconBack" class="header-icon icon-back" />
       </div>
       <div class="wechat-header-title">幸福家园业主群 (492)</div>
-      <div class="wechat-header-right" @click="openGroupSearch">
+      <div class="wechat-header-right" @click="openGroupDetail">
         <img :src="iconDots" class="header-icon icon-dots" />
       </div>
     </div>
@@ -75,12 +75,7 @@ const handleAvatarClick = () => {
 };
 
 const openOAProfile = () => store.navigatePhone("oa-profile");
-const openGroupSearch = () => {
-  if (store.gameLevel >= 3) {
-    store.navigatePhone("search");
-    store.showToast("搜索‘张大姐’，看看群里有几个张大姐？");
-  }
-};
+const openGroupDetail = () => store.navigatePhone("group-detail");
 </script>
 
 <style scoped>

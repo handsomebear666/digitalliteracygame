@@ -26,10 +26,14 @@
         <div v-if="store.showPhoneSystem" class="wechat-system-wrapper">
           <WechatChat v-show="store.activePhonePage === 'chat'" />
           <OfficialAccount v-show="store.activePhonePage.startsWith('oa-')" />
-          <PhishingForm v-show="store.activePhonePage === 'welfare'" />
+          <PhishingForm
+            v-if="store.activePhonePage === 'welfare'"
+            :key="store.activePhonePage"
+          />
           <ProfileFake v-show="store.activePhonePage === 'fake-profile'" />
           <ProfileReal v-show="store.activePhonePage === 'real-profile'" />
           <FakeMoments v-show="store.activePhonePage === 'fake-moments'" />
+          <GroupDetail v-show="store.activePhonePage === 'group-detail'" />
           <GroupSearch v-show="store.activePhonePage === 'search'" />
         </div>
       </transition>
@@ -67,6 +71,7 @@ import PhishingForm from "@/views/games/game2/components/phone/PhishingForm.vue"
 import ProfileFake from "@/views/games/game2/components/phone/ProfileFake.vue";
 import ProfileReal from "@/views/games/game2/components/phone/ProfileReal.vue";
 import FakeMoments from "@/views/games/game2/components/phone/FakeMoments.vue";
+import GroupDetail from "@/views/games/game2/components/phone/GroupDetail.vue";
 import GroupSearch from "@/views/games/game2/components/phone/GroupSearch.vue";
 import ActionMenu from "@/views/games/game2/components/phone/ActionMenu.vue";
 
@@ -102,11 +107,9 @@ const handleResultAction = (action) => {
   showResultPopup.value = false;
   if (action === "replay") {
     if (store.gameResult === "win") {
-      // 胜利后重新选择：重置整个游戏
       store.resetGame();
-      location.reload(); // 刷新确保完全重置
+      location.reload();
     } else {
-      // 失败后重新选择：回到选项处
       store.goBackToOptions();
     }
   } else if (action === "home") {
@@ -138,10 +141,7 @@ onMounted(() => {
     return;
   }
   sessionStorage.removeItem("fromHome");
-
-  // 每次进入游戏都重置状态（确保全新开始）
   store.resetGame();
-
   store.tryPlayBGM();
   window.addEventListener("beforeunload", handleBeforeUnload);
 });
