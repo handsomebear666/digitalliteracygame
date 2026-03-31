@@ -82,10 +82,10 @@ const handleSubmit = () => {
   if (verificationCode.value === "882931") {
     store.setGameResult(
       "lose",
-      "刚刚的验证码是修改妈妈的支付密码，妈妈的钱被盗刷了！",
+      "刚刚的验证码是修改妈妈的支付密码，她的钱被转走了！",
     );
   } else {
-    store.showToast("❌ 验证码输入错误", true);
+    store.showToast("❌ 验证码输入错误，请重试！", false);
   }
 };
 </script>

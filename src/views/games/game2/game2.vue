@@ -87,7 +87,8 @@ const showVictoryPopup = () => {
   resultData.value = {
     type: "success",
     title: "🎉 成功通关！🎉",
-    text: "你成功识破了骗局，帮助妈妈避免了损失！",
+    // text: "你成功识破了骗局，帮助妈妈避免了损失！",
+    text: "",
   };
   showResultPopup.value = true;
 };

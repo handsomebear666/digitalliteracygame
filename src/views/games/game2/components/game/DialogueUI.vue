@@ -206,7 +206,7 @@ const handleContainerClick = () => {
   ) {
     store.setGameResult(
       "lose",
-      "你没有阻止妈妈，她点击了钓鱼链接，银行卡里的钱被转走了。",
+      "你没有成功劝阻妈妈，她点击了钓鱼链接，她的钱被转走了！",
     );
     return; // 不再继续推进
   }
