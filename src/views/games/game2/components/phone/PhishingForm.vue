@@ -62,32 +62,29 @@ import iconDots from "@/views/games/game2/assets/img/icon_dots.svg";
 const store = useGameStore();
 const verificationCode = ref("");
 
-// 当第二关界面重新激活时，清空输入框
+// 监听重置信号，清空输入框
 watch(
-  () => [store.showPhoneSystem, store.activePhonePage],
-  ([show, page]) => {
-    if (show && page === "welfare") {
+  () => store.resetPhishingForm,
+  (val) => {
+    if (val) {
       verificationCode.value = "";
+      // 清空后立即将信号重置，避免下次重复清空
+      store.resetPhishingForm = false;
     }
   },
 );
 
 const handleSubmit = () => {
-  // 如果已经通关第二关，不再处理验证码输入（防止重复触发）
   if (store.level2Solved) {
     store.showToast("活动已结束，请返回聊天", false);
     return;
   }
-
-  // 检查验证码
   if (verificationCode.value === "882931") {
-    // 正确验证码 -> 游戏失败
     store.setGameResult(
       "lose",
       "刚刚的验证码是修改妈妈的支付密码，妈妈的钱被盗刷了！",
     );
   } else {
-    // 错误验证码 -> 红色提示
     store.showToast("❌ 验证码输入错误", true);
   }
 };
