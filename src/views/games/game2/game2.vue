@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
@@ -148,6 +148,17 @@ const handleResultAction = (action) => {
     router.push(`/game/${store.currentGameId}/cards`);
   }
 };
+
+watch(
+  () => store.gameResult,
+  (newVal) => {
+    if (newVal === "win") {
+      showVictoryPopup();
+    } else if (newVal === "lose") {
+      showFailPopup(store.gameResultMessage);
+    }
+  },
+);
 </script>
 
 <style scoped>
