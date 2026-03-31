@@ -181,7 +181,7 @@ watch(
 );
 
 const handleContainerClick = () => {
-  if (store.isGameOver) return; // 游戏结束，禁止交互
+  if (store.isGameOver) return;
 
   store.tryPlayBGM();
 
@@ -198,6 +198,19 @@ const handleContainerClick = () => {
     return;
   }
 
+  // 当前对话已全部显示完毕
+  // 如果是失败结局（id === 4），则触发失败结果
+  if (
+    currentLine.value?.id === 4 &&
+    currentLine.value?.customAction === "badEnd"
+  ) {
+    store.setGameResult(
+      "lose",
+      "你没有阻止妈妈，她点击了钓鱼链接，银行卡里的钱被转走了。",
+    );
+    return; // 不再继续推进
+  }
+
   if (!showOptions.value && currentLine.value?.nextId !== undefined) {
     store.playClickAudio();
     store.nextLine(currentLine.value.nextId);
@@ -206,6 +219,7 @@ const handleContainerClick = () => {
 
 const selectOption = (opt) => {
   store.playClickAudio();
+  // 选项跳转，正常推进
   store.setGameTimeout(() => store.nextLine(opt.nextId), 150);
 };
 </script>

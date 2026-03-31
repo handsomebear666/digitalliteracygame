@@ -101,7 +101,14 @@ const showFailPopup = (message) => {
 const handleResultAction = (action) => {
   showResultPopup.value = false;
   if (action === "replay") {
-    location.reload();
+    if (store.gameResult === "win") {
+      // 胜利后重新选择：重置整个游戏
+      store.resetGame();
+      location.reload(); // 刷新确保完全重置
+    } else {
+      // 失败后重新选择：回到选项处
+      store.goBackToOptions();
+    }
   } else if (action === "home") {
     store.stopAllAudio();
     router.push("/");
@@ -123,7 +130,7 @@ watch(
   },
 );
 
-// ========== 原有生命周期和计算属性 ==========
+// ========== 生命周期和计算属性 ==========
 onMounted(() => {
   const fromHome = sessionStorage.getItem("fromHome");
   if (!fromHome) {
