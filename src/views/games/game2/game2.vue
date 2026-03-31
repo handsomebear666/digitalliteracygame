@@ -37,6 +37,7 @@
       <!-- 底部操作菜单 -->
       <ActionMenu v-if="store.showActionSheet" />
 
+      <!-- 结果弹窗 -->
       <ResultPopup
         v-if="showResultPopup"
         :resultData="resultData"
@@ -47,11 +48,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, watch } from "vue";
+import { computed, onMounted, onUnmounted, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
 import ResultPopup from "@/views/games/game2/components/overlays/ResultPopup.vue";
+
 // 组件导入
 import Character from "@/views/games/game2/components/game/Character.vue";
 import PhoneIcon from "@/views/games/game2/components/game/PhoneIcon.vue";
@@ -67,12 +69,63 @@ import ProfileReal from "@/views/games/game2/components/phone/ProfileReal.vue";
 import FakeMoments from "@/views/games/game2/components/phone/FakeMoments.vue";
 import GroupSearch from "@/views/games/game2/components/phone/GroupSearch.vue";
 import ActionMenu from "@/views/games/game2/components/phone/ActionMenu.vue";
-import { ref } from "vue";
-const showResultPopup = ref(false);
-const resultData = ref({ type: "", title: "", text: "" });
+
 const store = useGameStore();
 const router = useRouter();
 
+// 弹窗控制
+const showResultPopup = ref(false);
+const resultData = ref({ type: "", title: "", text: "" });
+
+// 显示胜利弹窗
+const showVictoryPopup = () => {
+  resultData.value = {
+    type: "success",
+    title: "🎉 成功通关！🎉",
+    text: "你成功识破了骗局，帮助家人避免了损失！",
+  };
+  showResultPopup.value = true;
+};
+
+// 显示失败弹窗
+const showFailPopup = (message) => {
+  resultData.value = {
+    type: "fail",
+    title: "⚠️ 防骗失败",
+    text: message || "很遗憾，家人还是被骗了，下次一定要更谨慎哦！",
+  };
+  showResultPopup.value = true;
+};
+
+// 处理弹窗按钮事件
+const handleResultAction = (action) => {
+  showResultPopup.value = false;
+  if (action === "replay") {
+    // 重置游戏并刷新页面（简单粗暴但可靠）
+    location.reload();
+  } else if (action === "home") {
+    store.stopAllAudio();
+    router.push("/");
+  } else if (action === "cards") {
+    store.stopAllAudio();
+    // 跳转知识卡片页面（game2 的卡片页面路径，可根据实际调整）
+    router.push(`/game/game2/cards`);
+  }
+};
+
+// 监听游戏结果
+watch(
+  () => store.gameResult,
+  (newVal) => {
+    if (newVal === "win") {
+      showVictoryPopup();
+    } else if (newVal === "lose") {
+      showFailPopup(store.gameResultMessage);
+    }
+  },
+);
+
+// ========== 原有生命周期和计算属性 ==========
 const reloadGame = () => location.reload();
 
 onMounted(() => {
@@ -82,7 +135,6 @@ onMounted(() => {
     return;
   }
   sessionStorage.removeItem("fromHome");
-
   store.tryPlayBGM();
   window.addEventListener("beforeunload", handleBeforeUnload);
 });
@@ -113,52 +165,6 @@ const currentBackground = computed(() => {
     ? ASSETS.BACKGROUNDS[line.background]
     : ASSETS.BACKGROUNDS?.default || "";
 });
-
-// 显示胜利弹窗
-const showVictoryPopup = () => {
-  resultData.value = {
-    type: "success",
-    title: "🎉 成功通关！🎉",
-    text: "你成功识破了骗局，帮助家人避免了损失！",
-  };
-  showResultPopup.value = true;
-};
-
-// 显示失败弹窗
-const showFailPopup = (message) => {
-  resultData.value = {
-    type: "fail",
-    title: "⚠️ 防骗失败",
-    text: message || "很遗憾，家人还是被骗了，下次一定要更谨慎哦！",
-  };
-  showResultPopup.value = true;
-};
-
-// 处理弹窗按钮事件
-const handleResultAction = (action) => {
-  showResultPopup.value = false;
-  if (action === "replay") {
-    // 重新开始游戏（例如重置 store 并重新加载）
-    location.reload(); // 或调用重置逻辑
-  } else if (action === "home") {
-    // 返回主页地图
-    router.push("/");
-  } else if (action === "cards") {
-    // 跳转知识卡片页面
-    router.push(`/game/${store.currentGameId}/cards`);
-  }
-};
-
-watch(
-  () => store.gameResult,
-  (newVal) => {
-    if (newVal === "win") {
-      showVictoryPopup();
-    } else if (newVal === "lose") {
-      showFailPopup(store.gameResultMessage);
-    }
-  },
-);
 </script>
 
 <style scoped>
@@ -212,7 +218,7 @@ watch(
   width: 100%;
   height: 100%;
   z-index: 10;
-  pointer-events: auto; /* 关键修改：允许点击 */
+  pointer-events: auto;
 }
 
 /* 电脑端（宽屏）改为左右并排布局 */
@@ -253,43 +259,6 @@ watch(
   background-color: #ededed;
   z-index: 100;
   overflow: hidden;
-}
-
-/* 结局屏幕 */
-.end-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-.end-card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  border: 4px solid #07c160;
-  margin: 20px;
-}
-.end-card h1 {
-  color: #07c160;
-  margin-bottom: 15px;
-}
-.end-card button {
-  background: #07c160;
-  color: #fff;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 20px;
 }
 
 /* 震动动画 */

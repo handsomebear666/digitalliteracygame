@@ -11,7 +11,7 @@ let timers = [];
 
 export const useGameStore = defineStore("game", {
   state: () => ({
-    hasStarted: true, // 直接开始，不显示开始界面
+    hasStarted: true,
     gameLevel: 1,
     level2Solved: false,
     currentLineId: 0,
@@ -22,7 +22,7 @@ export const useGameStore = defineStore("game", {
     showSmsPopup: false,
     showActionSheet: false,
     isShaking: false,
-    showEndScreen: false,
+    showEndScreen: false, // 保留但不再使用
     toastMsg: "",
     toastBgColor: "#07c160",
     foundFlawsL1: [],
@@ -32,10 +32,37 @@ export const useGameStore = defineStore("game", {
   }),
 
   actions: {
+    // 设置游戏结果
     setGameResult(result, message = "") {
       this.gameResult = result;
       this.gameResultMessage = message;
     },
+
+    // 重置游戏状态（用于 replay）
+    resetGame() {
+      this.gameLevel = 1;
+      this.level2Solved = false;
+      this.currentLineId = 0;
+      this.showPhoneSystem = false;
+      this.activePhonePage = "chat";
+      this.showHintBtn = false;
+      this.showSmsPopup = false;
+      this.showActionSheet = false;
+      this.isShaking = false;
+      this.showEndScreen = false;
+      this.toastMsg = "";
+      this.foundFlawsL1 = [];
+      this.foundFlawsL3 = [];
+      this.gameResult = null;
+      this.gameResultMessage = "";
+      if (bgmInstance) {
+        bgmInstance.pause();
+        bgmInstance.currentTime = 0;
+        bgmInstance = null;
+      }
+      this.tryPlayBGM();
+    },
+
     // 统一管理定时器
     setGameTimeout(callback, delay) {
       const id = setTimeout(() => {
@@ -85,6 +112,14 @@ export const useGameStore = defineStore("game", {
       if (line?.customAction === "startLevel2") this.gameLevel = 2;
       else if (line?.customAction === "startLevel3") this.gameLevel = 3;
       else if (line?.customAction === "startReport") this.gameLevel = 4;
+
+      // 检查是否是失败结局（id=4）
+      if (id === 4) {
+        this.setGameResult(
+          "lose",
+          "你没有阻止妈妈，她点击了钓鱼链接，银行卡里的钱被转走了。",
+        );
+      }
     },
 
     // === 手机界面全局调度 ===
@@ -187,13 +222,15 @@ export const useGameStore = defineStore("game", {
       }
     },
 
+    // 投诉成功 -> 游戏胜利
     doReport() {
       this.showActionSheet = false;
       this.showToast("✅ 投诉提交成功！微信安全中心已介入！");
       this.setGameTimeout(() => {
         this.showPhoneSystem = false;
         this.showHintBtn = false;
-        this.showEndScreen = true;
+        // 替换原来的 showEndScreen = true 为设置胜利
+        this.setGameResult("win");
       }, 2000);
     },
   },
