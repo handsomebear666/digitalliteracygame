@@ -21,7 +21,20 @@
       >
         <div v-if="!isThought" class="name-tag">{{ currentLine?.name }}</div>
 
-        <div class="dialogue-text" ref="textEl" v-html="displayedText"></div>
+        <div class="dialogue-text measure-el" ref="measureEl"></div>
+
+        <div class="dialogue-text">
+          <div class="text-inner">
+            <span
+              v-for="(char, index) in currentText"
+              :key="index"
+              :style="{
+                visibility: index < visibleCount ? 'visible' : 'hidden',
+              }"
+              >{{ char }}</span
+            >
+          </div>
+        </div>
 
         <div
           v-if="
@@ -41,19 +54,23 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from "vue";
+import { ref, computed, watch, nextTick, onUnmounted } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import { GAME_STORY } from "@/views/games/game2/data/story";
-import { onUnmounted } from "vue";
 
 const store = useGameStore();
-const textEl = ref(null);
 
-const displayedText = ref("");
+// 💥 替换为测算专用的 measureEl
+const measureEl = ref(null);
+
 const isTyping = ref(false);
 const textPages = ref([]);
 const currentPageIdx = ref(0);
 let typingTimer = null;
+
+// 💥 新增：精确管理当前页的文字字符和可见字数
+const currentText = computed(() => textPages.value[currentPageIdx.value] || "");
+const visibleCount = ref(0);
 
 const currentLine = computed(() =>
   GAME_STORY.scriptLines.find((l) => l.id === store.currentLineId),
@@ -77,7 +94,7 @@ onUnmounted(() => {
 // === 核心升级：带智能分词的高度测算 ===
 const splitTextDynamically = async (text) => {
   await nextTick();
-  const el = textEl.value;
+  const el = measureEl.value; // 💥 使用隐藏的测算节点
   if (!el) return [text];
 
   const originalHeight = el.style.height;
@@ -87,12 +104,9 @@ const splitTextDynamically = async (text) => {
   const maxHeight = el.offsetHeight + 2;
   el.innerHTML = "";
 
-  // 1. 智能分词：将文本切分成不可分割的“词块”
   const tokens = [];
   let i = 0;
-  // 匹配连续的英文字母或数字
   const isAlNum = (c) => /^[a-zA-Z0-9]+$/.test(c);
-  // 匹配常见的全半角标点符号（不可做句首）
   const isPunct = (c) =>
     /^[.,!?;:'"()\[\]{}<>\-—…、，。！？；：“”‘’（）《》【】]+$/.test(c);
 
@@ -102,7 +116,6 @@ const splitTextDynamically = async (text) => {
 
     if (isAlNum(char)) {
       i++;
-      // 如果是数字/英文，向后寻找所有连续的数字/英文打包
       while (i < text.length && isAlNum(text[i])) {
         word += text[i];
         i++;
@@ -111,7 +124,6 @@ const splitTextDynamically = async (text) => {
       i++;
     }
 
-    // 不管前面是中文还是英文数字，只要后面紧跟标点符号，就死死黏在一起
     while (i < text.length && isPunct(text[i])) {
       word += text[i];
       i++;
@@ -119,7 +131,6 @@ const splitTextDynamically = async (text) => {
     tokens.push(word);
   }
 
-  // 2. 按“词块”进行高度测算，绝不硬切
   const pages = [];
   let currentPage = "";
 
@@ -127,7 +138,6 @@ const splitTextDynamically = async (text) => {
     el.innerHTML = currentPage + token;
     if (el.offsetHeight > maxHeight) {
       if (currentPage === "") {
-        // 极端防死循环：如果一个超长的词组直接爆页，强行塞入
         pages.push(token);
         currentPage = "";
       } else {
@@ -150,21 +160,12 @@ const splitTextDynamically = async (text) => {
 const playPage = () => {
   clearInterval(typingTimer);
   isTyping.value = true;
-  let i = 0;
-  const currentText = textPages.value[currentPageIdx.value] || "";
-
-  // 💥 核心魔法：第一帧就把所有字放进去，但设为全透明占位。
-  // 这样浏览器会瞬间排版好它是一行还是两行，并且完美居中！
-  displayedText.value = `<span style="opacity: 0;">${currentText}</span>`;
+  visibleCount.value = 0; // 💥 重置可见字数
+  const textLen = currentText.value.length;
 
   typingTimer = setInterval(() => {
-    if (i < currentText.length) {
-      i++;
-      // 把文字切成两半：左边是看得见的，右边是透明占位的
-      const visiblePart = currentText.substring(0, i);
-      const hiddenPart = currentText.substring(i);
-
-      displayedText.value = `${visiblePart}<span style="opacity: 0;">${hiddenPart}</span>`;
+    if (visibleCount.value < textLen) {
+      visibleCount.value++; // 💥 每次单纯增加一个可见字的索引，极速渲染
     } else {
       clearInterval(typingTimer);
       isTyping.value = false;
@@ -175,7 +176,7 @@ const playPage = () => {
 const startLine = async () => {
   if (!currentLine.value) return;
   clearInterval(typingTimer);
-  displayedText.value = "";
+  visibleCount.value = 0;
 
   textPages.value = await splitTextDynamically(currentLine.value.text);
   currentPageIdx.value = 0;
@@ -197,7 +198,7 @@ const handleContainerClick = () => {
 
   if (isTyping.value) {
     clearInterval(typingTimer);
-    displayedText.value = textPages.value[currentPageIdx.value];
+    visibleCount.value = currentText.value.length; // 💥 瞬间全显
     isTyping.value = false;
     return;
   }
@@ -227,9 +228,9 @@ const selectOption = (opt) => {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 20; /* 高于 .ui-layer */
+  z-index: 20;
   cursor: pointer;
-  pointer-events: auto; /* 允许点击 */
+  pointer-events: auto;
 }
 
 .dialogue-system-wrapper {
@@ -250,7 +251,6 @@ const selectOption = (opt) => {
   box-sizing: border-box;
 }
 
-/* 让气泡和选项按钮恢复点击，并允许事件冒泡（但我们会阻止） */
 .dialogue-bubble,
 .options-container {
   pointer-events: auto;
@@ -293,10 +293,6 @@ const selectOption = (opt) => {
   border: 4px solid #a8c989;
   border-radius: 20px;
   padding: 20px 25px 8px 25px;
-
-  /* 💥 核心修改 1：删除 min-height: 100px; */
-  /* 让气泡的高度完全由内部的文字和内边距自然撑开 */
-
   cursor: pointer;
   display: block;
   box-shadow: 0 8px 24px rgba(168, 201, 137, 0.15);
@@ -314,22 +310,40 @@ const selectOption = (opt) => {
   border: 3px solid #fffdf5;
   z-index: 10;
 }
+
+/* 💥 更新的对话文字层 */
 .dialogue-text {
   color: #5a4634 !important;
   font-size: 1.1rem;
   line-height: 1.5;
-
-  /* 💥 核心修改 2：死死锁定为精确的 2 行高度 */
-  /* 1.5 (行高) * 2 (行数) = 3em。无论手机字体多大，3em 永远精确等于该字体的 2 行高度！ */
-  height: 3em;
-
-  /* 💥 核心修改 3：溢出隐藏 */
-  /* 作为最后一道防线，就算有一点点没算准，也绝不允许文字漏到第三行把气泡撑破 */
+  height: 3em; /* 绝对锁死两行高度 */
   overflow: hidden;
-
   margin-top: 0;
   z-index: 5;
+
+  /* 使用 flex 让内部文字块绝对垂直居中 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
+
+/* 💥 测算专用的隐藏层，不影响正式视图 */
+.measure-el {
+  position: absolute !important;
+  visibility: hidden !important;
+  z-index: -100;
+  width: calc(100% - 50px);
+  height: auto !important;
+  display: block !important;
+}
+
+/* 💥 文字包装层 */
+.text-inner {
+  width: 100%;
+  margin: 0;
+  white-space: pre-wrap; /* 允许换行符正常渲染 */
+}
+
 .next-indicator {
   position: absolute;
   bottom: 12px;
@@ -348,23 +362,24 @@ const selectOption = (opt) => {
     transform: translateY(4px);
   }
 }
+
+/* --- 取消头重脚轻，赋予完全对称的上下内边距 --- */
 .dialogue-bubble.thought-style {
   border-color: #cbd5e0;
   background-color: rgba(255, 255, 255, 0.9);
-  /* 💥 修复 1：取消头重脚轻，使用完全对称的上下内边距 (上下 16px，左右 25px) */
-  padding: 16px 25px;
+  padding: 16px 25px; /* 上下左右完美对称 */
 }
 .dialogue-bubble.thought-style .name-tag {
   display: none !important;
 }
+
+/* 独白文本居中对齐 */
 .dialogue-bubble.thought-style .dialogue-text {
+  justify-content: center;
+}
+.dialogue-bubble.thought-style .text-inner {
+  text-align: center;
   color: #718096 !important;
   font-style: italic;
-  text-align: center !important;
-  /* 💥 修复 2：开启 Flex 魔法，让文字在锁死的 3em 高度内绝对垂直居中！ */
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
-  margin: 0 auto;
 }
 </style>
