@@ -5,11 +5,11 @@
         <img :src="iconBack" class="svg-icon icon-back" alt="back" />
       </div>
       <div class="header-title">
-        聊天信息(500)
+        聊天信息(492)
         <img src="" class="svg-icon icon-mute-bell" alt="mute" />
       </div>
       <div class="header-right">
-        <img src="" class="svg-icon icon-search" alt="search" />
+        <img :src="iconSearch" class="svg-icon icon-search" alt="search" />
       </div>
     </div>
 
@@ -36,9 +36,7 @@
         <div class="list-item">
           <span class="item-label">群聊名称</span>
           <div class="item-value-wrap">
-            <span class="item-value truncate-text"
-              >🌈TEL苏苏⭐️水果团品福利1️⃣群</span
-            >
+            <span class="item-value truncate-text">幸福家园业主群</span>
             <span class="arrow-right"></span>
           </div>
         </div>
@@ -161,7 +159,7 @@
 import { reactive } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
-
+import iconSearch from "@/views/games/game2/assets/img/icon_search.svg";
 const store = useGameStore();
 
 // 模拟截图中的开关状态
