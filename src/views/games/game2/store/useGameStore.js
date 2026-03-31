@@ -31,6 +31,7 @@ export const useGameStore = defineStore("game", {
     gameResultMessage: "",
     isGameOver: false,
     failLevel: null, // 记录失败时的关卡
+    resetPhishingForm: false, // 新增：用于通知钓鱼网页清空输入框
   }),
 
   actions: {
@@ -40,7 +41,7 @@ export const useGameStore = defineStore("game", {
       this.gameResultMessage = message;
       this.isGameOver = true;
       if (result === "lose") {
-        this.failLevel = this.gameLevel; // 记录失败时的关卡
+        this.failLevel = this.gameLevel;
       }
     },
 
@@ -63,6 +64,7 @@ export const useGameStore = defineStore("game", {
       this.gameResultMessage = "";
       this.isGameOver = false;
       this.failLevel = null;
+      this.resetPhishingForm = false; // 重置信号
       if (bgmInstance) {
         bgmInstance.pause();
         bgmInstance.currentTime = 0;
@@ -90,6 +92,8 @@ export const useGameStore = defineStore("game", {
         this.failLevel = null;
         this.clearAllTimers();
         this.tryPlayBGM();
+        // 第一关不需要清空输入框，但为避免误用，仍重置信号
+        this.resetPhishingForm = false;
       } else if (level === 2) {
         // 第二关失败：回到钓鱼网页界面
         this.gameLevel = 2;
@@ -102,7 +106,6 @@ export const useGameStore = defineStore("game", {
         this.gameResult = null;
         this.gameResultMessage = "";
         this.failLevel = null;
-        // 清除所有定时器，避免残留
         this.clearAllTimers();
         // 重新启动短信弹窗定时器（模拟 togglePhone 的逻辑）
         this.setGameTimeout(() => {
@@ -115,6 +118,8 @@ export const useGameStore = defineStore("game", {
           }
         }, 1000);
         this.tryPlayBGM();
+        // 触发清空输入框信号
+        this.resetPhishingForm = true;
       } else {
         // 默认全重置（保险）
         this.resetGame();

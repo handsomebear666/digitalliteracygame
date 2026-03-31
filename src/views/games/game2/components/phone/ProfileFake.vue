@@ -199,19 +199,24 @@ const openFakeMoreMenu = () => {
 .flaw-exposed::after {
   content: "";
   position: absolute;
-  top: -6px;
-  left: -6px;
-  right: -6px;
-  bottom: -6px;
-  border: 2.5px solid #ff4d4f;
-  border-radius: 8px;
+  /* 💥 核心修复 1：把 -6px 改为 0，让红框紧贴容器内部，不再溢出屏幕 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 3px solid #ff4d4f;
+  border-radius: 4px; /* 圆角稍微改小一点，更贴合矩形卡片 */
   pointer-events: none;
   z-index: 100;
+  box-sizing: border-box; /* 💥 核心修复 2：让边框的厚度向内计算 */
   animation: pop-flaw 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
 }
+
 @keyframes pop-flaw {
   0% {
-    transform: scale(1.1);
+    /* 💥 优化：把原来的 scale(1.1) 改小一点。
+       防止动画弹出的瞬间变得太大，导致一瞬间的屏幕右侧截断 */
+    transform: scale(1.02);
     opacity: 0;
   }
   100% {
