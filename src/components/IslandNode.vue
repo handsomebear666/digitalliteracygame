@@ -9,7 +9,7 @@
       <div class="island-icon" v-else>{{ game.icon }}</div>
 
       <div class="island-title-img" v-if="game.titleImg">
-        <img :src="titleImageUrl" alt="title" />
+        <img :src="game.titleImg" alt="title" />
       </div>
       <h3 v-else>{{ game.title }}</h3>
 
@@ -83,19 +83,6 @@ const handleAction = () => {
     emit("play-game", props.index);
   }
 };
-
-// 计算标题图片的真实路径
-const titleImageUrl = computed(() => {
-  if (!props.game.titleImg) return "";
-  // 如果路径以 @/ 开头，尝试用动态导入方式解析
-  if (props.game.titleImg.startsWith("@/")) {
-    // 注意：这种方式需要 Vite 或 Webpack 支持
-    // 实际路径会被构建工具处理
-    const imgPath = props.game.titleImg.replace("@/", "");
-    return new URL(`/src/${imgPath}`, import.meta.url).href;
-  }
-  return props.game.titleImg;
-});
 </script>
 
 <style scoped>
