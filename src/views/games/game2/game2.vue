@@ -37,17 +37,11 @@
       <!-- 底部操作菜单 -->
       <ActionMenu v-if="store.showActionSheet" />
 
-      <!-- 结局屏幕 -->
-      <div v-if="store.showEndScreen" class="end-screen">
-        <div class="end-card">
-          <h1>🏆 防骗大师</h1>
-          <p>
-            你用一套行云流水的反诈军体拳，粉碎了危机！<br />
-            你的数字素养已击败全国 99% 的玩家！
-          </p>
-          <button @click="reloadGame">再玩一次</button>
-        </div>
-      </div>
+      <ResultPopup
+        v-if="showResultPopup"
+        :resultData="resultData"
+        @action="handleResultAction"
+      />
     </div>
   </div>
 </template>
@@ -57,7 +51,7 @@ import { computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
 import { GAME_STORY, ASSETS } from "@/views/games/game2/data/story";
-
+import ResultPopup from "@/views/games/game2/components/overlays/ResultPopup.vue";
 // 组件导入
 import Character from "@/views/games/game2/components/game/Character.vue";
 import PhoneIcon from "@/views/games/game2/components/game/PhoneIcon.vue";
@@ -73,7 +67,9 @@ import ProfileReal from "@/views/games/game2/components/phone/ProfileReal.vue";
 import FakeMoments from "@/views/games/game2/components/phone/FakeMoments.vue";
 import GroupSearch from "@/views/games/game2/components/phone/GroupSearch.vue";
 import ActionMenu from "@/views/games/game2/components/phone/ActionMenu.vue";
-
+import { ref } from "vue";
+const showResultPopup = ref(false);
+const resultData = ref({ type: "", title: "", text: "" });
 const store = useGameStore();
 const router = useRouter();
 
@@ -117,6 +113,41 @@ const currentBackground = computed(() => {
     ? ASSETS.BACKGROUNDS[line.background]
     : ASSETS.BACKGROUNDS?.default || "";
 });
+
+// 显示胜利弹窗
+const showVictoryPopup = () => {
+  resultData.value = {
+    type: "success",
+    title: "🎉 成功通关！🎉",
+    text: "你成功识破了骗局，帮助家人避免了损失！",
+  };
+  showResultPopup.value = true;
+};
+
+// 显示失败弹窗
+const showFailPopup = (message) => {
+  resultData.value = {
+    type: "fail",
+    title: "⚠️ 防骗失败",
+    text: message || "很遗憾，家人还是被骗了，下次一定要更谨慎哦！",
+  };
+  showResultPopup.value = true;
+};
+
+// 处理弹窗按钮事件
+const handleResultAction = (action) => {
+  showResultPopup.value = false;
+  if (action === "replay") {
+    // 重新开始游戏（例如重置 store 并重新加载）
+    location.reload(); // 或调用重置逻辑
+  } else if (action === "home") {
+    // 返回主页地图
+    router.push("/");
+  } else if (action === "cards") {
+    // 跳转知识卡片页面
+    router.push(`/game/${store.currentGameId}/cards`);
+  }
+};
 </script>
 
 <style scoped>
