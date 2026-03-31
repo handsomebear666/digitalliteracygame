@@ -6,7 +6,7 @@
       </div>
       <div class="header-title">
         聊天信息(492)
-        <img src="" class="svg-icon icon-mute-bell" alt="mute" />
+        <!-- <img src="" class="svg-icon icon-mute-bell" alt="mute" /> -->
       </div>
       <div class="header-right" @click="store.navigatePhone('search')">
         <img :src="iconSearch" class="svg-icon icon-search" alt="search" />
@@ -222,7 +222,6 @@ const toggle = (key) => {
 /* 预留 SVG 图标样式，设置默认大小，方便你替换真实 SVG */
 .svg-icon {
   display: inline-block;
-  background-color: #333; /* 占位色，放入真SVG后请移除 */
 }
 .icon-back {
   width: 12px;
@@ -233,7 +232,7 @@ const toggle = (key) => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid #333;
+  /* border: 2px solid #333; */
   background: transparent;
 }
 .icon-mute-bell {
