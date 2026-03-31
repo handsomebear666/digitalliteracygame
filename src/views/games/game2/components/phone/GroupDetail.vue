@@ -160,6 +160,7 @@
 <script setup>
 import { reactive } from "vue";
 import { useGameStore } from "@/views/games/game2/store/useGameStore";
+import iconBack from "@/views/games/game2/assets/img/icon_back.svg";
 
 const store = useGameStore();
 
