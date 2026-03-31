@@ -204,7 +204,7 @@ const openFakeMoreMenu = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  border: 3px solid #ff4d4f;
+  border: 2.5px solid #ff4d4f;
   border-radius: 4px; /* 圆角稍微改小一点，更贴合矩形卡片 */
   pointer-events: none;
   z-index: 100;
