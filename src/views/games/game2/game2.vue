@@ -229,7 +229,7 @@ const currentBackground = computed(() => {
 }
 
 /* 电脑端（宽屏）改为左右并排布局 */
-@media screen and (min-width: 1025px) {
+@media screen and (max-width: 1025px) {
   .game2-fullscreen-wrapper {
     background-color: #333;
   }

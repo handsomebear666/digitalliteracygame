@@ -2,7 +2,12 @@
   <div class="wechat-page" style="background: #ffffff; z-index: 105">
     <div
       class="wechat-header"
-      style="background: transparent; position: absolute; border: none"
+      style="
+        background: transparent;
+        position: absolute;
+        border: none;
+        z-index: 106;
+      "
     >
       <div
         class="wechat-header-left"
@@ -17,21 +22,48 @@
       <img :src="auntZhangImg" class="m-avatar" />
     </div>
     <div class="moments-body">
-      <div class="moments-tip">朋友仅展示最近三天的朋友圈</div>
-
       <div
-        class="moments-post flaw-row"
+        class="post-group flaw-row"
         :class="{ 'flaw-exposed': store.foundFlawsL3.includes('moments') }"
         @click="store.triggerL3Debunk('moments')"
       >
-        <img :src="auntZhangImg" class="post-avatar" />
-        <div class="post-content">
-          <div class="p-name">张大姐</div>
-          <div class="p-text">
-            建馆 30 周年大回馈，点击链接免费领 50 元话费 + 纸巾！👉
-            http://fake-welfare-phishing.com
+        <div class="post-date">
+          <span class="day">7</span>
+          <span class="month">23日</span>
+        </div>
+
+        <div class="post-card">
+          <div class="post-text-content">
+            <div class="post-title">
+              建馆 30 周年大回馈，点击链接免费领 50 元话费 + 纸巾！👉
+              <span class="highlight-link"
+                >http://fake-welfare-phishing.com</span
+              >
+            </div>
+            <div class="p-time">昨天</div>
+
+            <div class="comment-placeholder"></div>
           </div>
-          <div class="p-time">昨天</div>
+        </div>
+      </div>
+
+      <h2 class="year">2022年</h2>
+
+      <div class="post-group">
+        <div class="post-date">
+          <span class="day">8</span>
+          <span class="month">15日</span>
+        </div>
+
+        <div class="post-card">
+          <div class="post-text-content">
+            <div class="post-title">
+              夏日狂欢节，好礼送不停！点击参与活动 >>>
+              <span class="highlight-link">公众号：每日福利君</span>
+            </div>
+            <div class="p-time">前天</div>
+            <div class="comment-placeholder"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -74,22 +106,14 @@ const store = useGameStore();
   cursor: pointer;
   color: #333;
 }
-.wechat-header-right {
-  width: 40px;
-  text-align: right;
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: #333;
-  cursor: pointer;
-}
 .header-icon {
   vertical-align: middle;
   cursor: pointer;
 }
 .icon-back {
-  width: 23px;
+  width: 15px;
   height: 20px;
+  filter: brightness(0) invert(1); /* 变白 */
 }
 /* 朋友圈样式 */
 .moments-cover {
@@ -115,49 +139,69 @@ const store = useGameStore();
   width: 64px;
   height: 64px;
   border-radius: 8px;
-  border: 2px solid #fff;
+  object-fit: cover;
+  border: none; /* 移除白边 */
 }
 .moments-body {
-  padding: 50px 15px 20px;
+  padding: 0; /* 移除内边距，使帖子顶格 */
 }
-.moments-tip {
-  text-align: center;
-  color: #ccc;
-  font-size: 12px;
-  margin-bottom: 30px;
+.year {
+  padding: 20px 15px 10px;
+  font-size: 20px;
+  color: #1a1a1a;
+  font-weight: bold;
   letter-spacing: 1px;
 }
-.moments-post {
+.post-group {
   display: flex;
-  margin-bottom: 20px;
+  padding: 20px 15px;
 }
-.post-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  margin-right: 10px;
+.post-date {
+  width: 60px;
+  text-align: right;
+  margin-right: 15px;
+  padding-top: 5px;
 }
-.post-content {
-  flex: 1;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
-}
-.p-name {
-  color: #576b95;
-  font-size: 15px;
+.post-date .day {
+  font-size: 24px;
+  color: #1a1a1a;
   font-weight: bold;
-  margin-bottom: 5px;
 }
-.p-text {
+.post-date .month {
+  font-size: 14px;
+  color: #1a1a1a;
+}
+.post-card {
+  flex: 1;
+  background: #f7f7f7;
+  border-radius: 4px;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+.post-text-content {
+  flex: 1;
+}
+.post-title {
   font-size: 15px;
   color: #1a1a1a;
-  line-height: 1.5;
-  margin-bottom: 10px;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+.highlight-link {
+  color: #576b95; /* 微信蓝链接颜色 */
+  word-break: break-all;
 }
 .p-time {
-  font-size: 12px;
+  font-size: 13px;
   color: #999;
+  margin-top: 5px;
 }
+.comment-placeholder {
+  height: 10px; /* 创建评论区占位符高度 */
+}
+
+/* 破绽动画逻辑保持不变 */
 .flaw-row {
   cursor: pointer;
   border-radius: 4px;
