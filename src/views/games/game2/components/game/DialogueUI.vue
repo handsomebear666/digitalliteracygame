@@ -87,12 +87,9 @@ const splitTextDynamically = async (text) => {
   const maxHeight = el.offsetHeight + 2;
   el.innerHTML = "";
 
-  // 1. 智能分词：将文本切分成不可分割的“词块”
   const tokens = [];
   let i = 0;
-  // 匹配连续的英文字母或数字
   const isAlNum = (c) => /^[a-zA-Z0-9]+$/.test(c);
-  // 匹配常见的全半角标点符号（不可做句首）
   const isPunct = (c) =>
     /^[.,!?;:'"()\[\]{}<>\-—…、，。！？；：“”‘’（）《》【】]+$/.test(c);
 
@@ -102,7 +99,6 @@ const splitTextDynamically = async (text) => {
 
     if (isAlNum(char)) {
       i++;
-      // 如果是数字/英文，向后寻找所有连续的数字/英文打包
       while (i < text.length && isAlNum(text[i])) {
         word += text[i];
         i++;
@@ -111,7 +107,6 @@ const splitTextDynamically = async (text) => {
       i++;
     }
 
-    // 不管前面是中文还是英文数字，只要后面紧跟标点符号，就死死黏在一起
     while (i < text.length && isPunct(text[i])) {
       word += text[i];
       i++;
@@ -119,7 +114,6 @@ const splitTextDynamically = async (text) => {
     tokens.push(word);
   }
 
-  // 2. 按“词块”进行高度测算，绝不硬切
   const pages = [];
   let currentPage = "";
 
@@ -127,7 +121,6 @@ const splitTextDynamically = async (text) => {
     el.innerHTML = currentPage + token;
     if (el.offsetHeight > maxHeight) {
       if (currentPage === "") {
-        // 极端防死循环：如果一个超长的词组直接爆页，强行塞入
         pages.push(token);
         currentPage = "";
       } else {
@@ -149,15 +142,17 @@ const splitTextDynamically = async (text) => {
 
 const playPage = () => {
   clearInterval(typingTimer);
-  displayedText.value = "";
   isTyping.value = true;
   let i = 0;
   const currentText = textPages.value[currentPageIdx.value] || "";
 
   typingTimer = setInterval(() => {
     if (i < currentText.length) {
-      displayedText.value += currentText.charAt(i);
       i++;
+      const visiblePart = currentText.substring(0, i);
+      const hiddenPart = currentText.substring(i);
+      // 💥 魔法1：用透明字占位，一出场就固定大小，绝不跳动！
+      displayedText.value = `<span>${visiblePart}<span style="opacity: 0;">${hiddenPart}</span></span>`;
     } else {
       clearInterval(typingTimer);
       isTyping.value = false;
@@ -170,7 +165,9 @@ const startLine = async () => {
   clearInterval(typingTimer);
   displayedText.value = "";
 
-  textPages.value = await splitTextDynamically(currentLine.value.text);
+  // 💥 魔法2：强制剔除剧本中看不见的回车符，防止它把文字往下挤
+  const cleanText = currentLine.value.text.trim();
+  textPages.value = await splitTextDynamically(cleanText);
   currentPageIdx.value = 0;
   playPage();
 };
@@ -190,7 +187,8 @@ const handleContainerClick = () => {
 
   if (isTyping.value) {
     clearInterval(typingTimer);
-    displayedText.value = textPages.value[currentPageIdx.value];
+    // 💥 配合透明魔法的快速跳过显示
+    displayedText.value = `<span>${textPages.value[currentPageIdx.value]}</span>`;
     isTyping.value = false;
     return;
   }
@@ -220,9 +218,9 @@ const selectOption = (opt) => {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 20; /* 高于 .ui-layer */
+  z-index: 20;
   cursor: pointer;
-  pointer-events: auto; /* 允许点击 */
+  pointer-events: auto;
 }
 
 .dialogue-system-wrapper {
@@ -243,7 +241,6 @@ const selectOption = (opt) => {
   box-sizing: border-box;
 }
 
-/* 让气泡和选项按钮恢复点击，并允许事件冒泡（但我们会阻止） */
 .dialogue-bubble,
 .options-container {
   pointer-events: auto;
@@ -285,11 +282,8 @@ const selectOption = (opt) => {
   background-color: rgba(255, 253, 245, 0.98);
   border: 4px solid #a8c989;
   border-radius: 20px;
+  /* 普通对话框保留原始的内边距 */
   padding: 20px 25px 8px 25px;
-
-  /* 💥 核心修改 1：删除 min-height: 100px; */
-  /* 让气泡的高度完全由内部的文字和内边距自然撑开 */
-
   cursor: pointer;
   display: block;
   box-shadow: 0 8px 24px rgba(168, 201, 137, 0.15);
@@ -311,15 +305,8 @@ const selectOption = (opt) => {
   color: #5a4634 !important;
   font-size: 1.1rem;
   line-height: 1.5;
-
-  /* 💥 核心修改 2：死死锁定为精确的 2 行高度 */
-  /* 1.5 (行高) * 2 (行数) = 3em。无论手机字体多大，3em 永远精确等于该字体的 2 行高度！ */
   height: 3em;
-
-  /* 💥 核心修改 3：溢出隐藏 */
-  /* 作为最后一道防线，就算有一点点没算准，也绝不允许文字漏到第三行把气泡撑破 */
   overflow: hidden;
-
   margin-top: 0;
   z-index: 5;
 }
@@ -341,10 +328,13 @@ const selectOption = (opt) => {
     transform: translateY(4px);
   }
 }
+
+/* 💥 魔法3：独白模式专属优化 */
 .dialogue-bubble.thought-style {
   border-color: #cbd5e0;
   background-color: rgba(255, 255, 255, 0.9);
-  padding-top: 25px;
+  /* 取消头重脚轻的内边距，完全对称 */
+  padding: 16px 25px;
 }
 .dialogue-bubble.thought-style .name-tag {
   display: none !important;
@@ -353,5 +343,9 @@ const selectOption = (opt) => {
   color: #718096 !important;
   font-style: italic;
   text-align: center;
+  /* 开启 Flex 魔法，让整个文字块在 3em 的高度内绝对垂直居中！ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
