@@ -344,7 +344,8 @@ const selectOption = (opt) => {
 .dialogue-bubble.thought-style {
   border-color: #cbd5e0;
   background-color: rgba(255, 255, 255, 0.9);
-  padding-top: 25px;
+  /* 💥 修复 1：取消头重脚轻，使用完全对称的上下内边距 (上下 16px，左右 25px) */
+  padding: 16px 25px;
 }
 .dialogue-bubble.thought-style .name-tag {
   display: none !important;
@@ -352,8 +353,11 @@ const selectOption = (opt) => {
 .dialogue-bubble.thought-style .dialogue-text {
   color: #718096 !important;
   font-style: italic;
-  text-align: center !important; /* 强制水平居中 */
-  display: block; /* 确保块级元素 */
-  margin: 0 auto; /* 兼容旧浏览器 */
+  text-align: center !important;
+  /* 💥 修复 2：开启 Flex 魔法，让文字在锁死的 3em 高度内绝对垂直居中！ */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  margin: 0 auto;
 }
 </style>
