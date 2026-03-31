@@ -80,6 +80,7 @@ const store = useGameStore();
   font-size: 16px;
   color: #b2b2b2;
   margin-right: 6px;
+  width: 19px;
 }
 
 .search-input {
