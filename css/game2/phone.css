@@ -1,0 +1,1478 @@
+/* ============================================
+   游戏二 · 微信模拟器各页面样式
+   按页面根类名隔离作用域，忠实还原 Vue scoped 行为
+   ============================================ */
+
+/* ============ WechatChat（群聊页） ============ */
+.page-wechat-chat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-wechat-chat .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+.page-wechat-chat .wechat-header-left {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.page-wechat-chat .wechat-header-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  font-size: 17px;
+  color: #000;
+}
+.page-wechat-chat .wechat-header-right {
+  width: 40px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
+}
+.page-wechat-chat .header-icon {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.page-wechat-chat .icon-back {
+  width: 18px;
+  height: auto;
+}
+.page-wechat-chat .icon-dots {
+  width: 25px;
+  height: auto;
+}
+.page-wechat-chat .chat-container {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+.page-wechat-chat .time-divider {
+  text-align: center;
+  margin: 10px 0 20px 0;
+}
+.page-wechat-chat .time-divider span {
+  display: inline-block;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: #dadada;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.page-wechat-chat .message-item {
+  display: flex;
+  margin-bottom: 20px;
+}
+.page-wechat-chat .message-item .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  margin-right: 12px;
+  background-color: #ccc;
+  object-fit: cover;
+}
+.page-wechat-chat .content-area {
+  max-width: 72%;
+}
+.page-wechat-chat .sender-name {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+.page-wechat-chat .text-bubble {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  word-break: break-all;
+  color: #000;
+  position: relative;
+}
+.page-wechat-chat .text-bubble::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: -6px;
+  border-width: 6px 6px 6px 0;
+  border-style: solid;
+  border-color: transparent white transparent transparent;
+}
+.page-wechat-chat .fake-oa-card {
+  background: #ffffff;
+  padding: 0;
+  border-radius: 8px;
+  width: 240px;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+.page-wechat-chat .fake-oa-card::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: -6px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 6px solid #ffffff;
+}
+.page-wechat-chat .oa-card-body {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+}
+.page-wechat-chat .oa-card-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 12px;
+  overflow: hidden;
+}
+.page-wechat-chat .oa-card-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-wechat-chat .oa-card-name {
+  font-size: 16px;
+  color: #1a1a1a;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-wechat-chat .oa-card-footer {
+  font-size: 12px;
+  color: #999999;
+  padding: 8px 14px;
+  border-top: 1px solid #f2f2f2;
+  font-weight: 400;
+}
+.page-wechat-chat .wechat-bottom-bar {
+  height: 56px;
+  background: #f7f7f7;
+  border-top: 1px solid #ececec;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  flex-shrink: 0;
+}
+.page-wechat-chat .bottom-icon {
+  width: 28px;
+  height: 28px;
+  margin: 0 8px;
+  cursor: pointer;
+}
+.page-wechat-chat .wechat-input-box {
+  flex: 1;
+  height: 36px;
+  background: #fff;
+  border-radius: 4px;
+  border: none;
+  margin: 0 5px;
+}
+
+/* ============ OfficialAccount（公众号） ============ */
+.page-official-account {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-official-account .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+.page-official-account .wechat-header-left {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.page-official-account .wechat-header-right {
+  width: 40px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
+}
+.page-official-account .header-icon {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.page-official-account .icon-back {
+  width: 23px;
+  height: 20px;
+}
+.page-official-account .icon-dots {
+  width: 35px;
+  height: 28px;
+}
+.page-official-account .icon-close {
+  width: 28px;
+  height: 28px;
+}
+.page-official-account .oa-profile-content {
+  overflow-y: auto;
+  height: calc(100% - 50px);
+  background: #f7f7f7;
+}
+.page-official-account .oa-top-section {
+  background: #ffffff;
+  padding: 15px 20px 0;
+}
+.page-official-account .oa-basic-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.page-official-account .oa-round-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  background: #eee;
+  object-fit: cover;
+}
+.page-official-account .oa-titles {
+  flex: 1;
+  cursor: pointer;
+}
+.page-official-account .oa-name {
+  font-size: 19px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+.page-official-account .oa-sub {
+  font-size: 14px;
+  color: #999;
+}
+.page-official-account .oa-share-row {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: fit-content;
+}
+.page-official-account .oa-arrow {
+  margin-left: 8px;
+  color: #ccc;
+  font-family: consolas;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1;
+}
+.page-official-account .oa-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+.page-official-account .oa-btn {
+  flex: 1;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  background: #f2f2f2;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.page-official-account .oa-tabs {
+  display: flex;
+  gap: 24px;
+  padding-bottom: 12px;
+  align-items: flex-end;
+}
+.page-official-account .oa-tabs span {
+  font-size: 14px;
+  color: #999;
+  position: relative;
+  padding-bottom: 6px;
+}
+.page-official-account .oa-tabs span.active {
+  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 15px;
+}
+.page-official-account .oa-tabs span.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 3px;
+  background: #07c160;
+  border-radius: 2px;
+}
+.page-official-account .oa-posts-container {
+  padding: 12px 16px;
+}
+.page-official-account .oa-post-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+.page-official-account .post-date {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 12px;
+}
+.page-official-account .post-content-row {
+  display: flex;
+  justify-content: space-between;
+}
+.page-official-account .post-text-col {
+  flex: 1;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.page-official-account .post-title {
+  font-size: 16px;
+  color: #1a1a1a;
+  font-weight: normal;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.page-official-account .post-meta {
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+}
+.page-official-account .post-img-col {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.page-official-account .post-img-col img {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  display: block;
+}
+.page-official-account .oa-about-content {
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100% - 50px);
+}
+.page-official-account .about-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+.page-official-account .about-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 15px;
+}
+.page-official-account .about-text {
+  font-size: 15px;
+  color: #333;
+}
+.page-official-account .about-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+.page-official-account .about-row:last-child {
+  margin-bottom: 0;
+}
+.page-official-account .about-row span {
+  color: #666;
+}
+.page-official-account .about-row .val {
+  color: #333;
+  text-align: right;
+}
+.page-official-account .flaw-row {
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
+}
+.page-official-account .flaw-exposed::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2.5px solid #ff4d4f;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100;
+  animation: pop-flaw-oa 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes pop-flaw-oa {
+  0% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============ PhishingForm（钓鱼福利页） ============ */
+.page-phishing-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-phishing-form .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+.page-phishing-form .wechat-header-left {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.page-phishing-form .wechat-header-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  font-size: 17px;
+  color: #000;
+}
+.page-phishing-form .wechat-header-right {
+  width: 40px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
+}
+.page-phishing-form .header-icon {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.page-phishing-form .icon-close {
+  width: 28px;
+  height: 28px;
+}
+.page-phishing-form .icon-dots {
+  width: 35px;
+  height: 28px;
+}
+.page-phishing-form .welfare-banner {
+  background: linear-gradient(135deg, #ff4d4f, #ff7a45);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+.page-phishing-form .welfare-banner h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+.page-phishing-form .welfare-banner p {
+  font-size: 15px;
+  opacity: 0.9;
+}
+.page-phishing-form .welfare-form {
+  background: white;
+  margin: -20px 15px 0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+.page-phishing-form .form-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+.page-phishing-form .welfare-input {
+  width: 100%;
+  height: 45px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+  font-size: 15px;
+  margin-bottom: 15px;
+  color: #666;
+  background: #fcfcfc;
+  box-sizing: border-box;
+}
+.page-phishing-form .code-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+.page-phishing-form .code-input {
+  margin-bottom: 0;
+  flex: 1;
+  background: #fff;
+}
+.page-phishing-form .get-code-btn {
+  padding: 0 15px;
+  background: #f2f2f2;
+  color: #999;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.page-phishing-form .submit-welfare-btn {
+  width: 100%;
+  height: 48px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+/* ============ ProfileFake（假冒资料页） ============ */
+.page-profile-fake {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-profile-fake .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+.page-profile-fake .wechat-header-left {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.page-profile-fake .wechat-header-right {
+  width: 40px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
+}
+.page-profile-fake .header-icon {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.page-profile-fake .icon-back {
+  width: 23px;
+  height: 20px;
+}
+.page-profile-fake .icon-dots {
+  width: 35px;
+  height: 28px;
+}
+.page-profile-fake .profile-top-card {
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.page-profile-fake .profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  margin-right: 15px;
+  object-fit: cover;
+  background: #ccc;
+}
+.page-profile-fake .profile-info {
+  flex: 1;
+}
+.page-profile-fake .profile-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.page-profile-fake .profile-sub {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 2px;
+}
+.page-profile-fake .profile-row-card {
+  background: #fff;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+.page-profile-fake .row-label {
+  font-size: 16px;
+  color: #1a1a1a;
+  width: 80px;
+}
+.page-profile-fake .row-content {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-profile-fake .row-arrow {
+  color: #ccc;
+  font-family: consolas;
+  font-size: 18px;
+  font-weight: bold;
+}
+.page-profile-fake .profile-btn-card {
+  background: #fff;
+  padding: 20px;
+  margin-top: 8px;
+  text-align: center;
+}
+.page-profile-fake .profile-btn-green {
+  background: #07c160;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.page-profile-fake .flaw-row {
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
+}
+.page-profile-fake .flaw-exposed::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2.5px solid #ff4d4f;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 100;
+  box-sizing: border-box;
+  animation: pop-flaw-pf 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes pop-flaw-pf {
+  0% {
+    transform: scale(1.02);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============ ProfileReal（真实资料页） ============ */
+.page-profile-real {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-profile-real .wechat-header {
+  height: 50px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: none;
+  flex-shrink: 0;
+}
+.page-profile-real .wechat-header-left,
+.page-profile-real .wechat-header-right {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.page-profile-real .wechat-header-left {
+  justify-content: flex-start;
+}
+.page-profile-real .header-icon {
+  font-size: 20px;
+  color: #191919;
+}
+.page-profile-real .icon-back {
+  width: 23px;
+  height: 20px;
+}
+.page-profile-real .icon-menu {
+  color: #191919;
+}
+.page-profile-real .profile-top-card {
+  background: #ffffff;
+  padding: 15px 20px 25px 20px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  position: relative;
+}
+.page-profile-real .profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  margin-right: 15px;
+  object-fit: cover;
+  background: #e5e5e5;
+}
+.page-profile-real .profile-info {
+  flex: 1;
+}
+.page-profile-real .profile-name {
+  font-size: 22px;
+  font-weight: 500;
+  color: #191919;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+.page-profile-real .gender-icon-pink {
+  font-size: 14px;
+  color: #ff4d4f;
+  margin-left: 8px;
+}
+.page-profile-real .profile-sub {
+  font-size: 15px;
+  color: #888888;
+  margin-bottom: 4px;
+}
+.page-profile-real .profile-memo-card {
+  background: #ffffff;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.page-profile-real .memo-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-profile-real .memo-desc-row {
+  font-size: 13px;
+  color: #b2b2b2;
+  margin-top: 8px;
+  line-height: 1.4;
+  padding-right: 20px;
+}
+.page-profile-real .profile-row-card {
+  background: #ffffff;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.page-profile-real .row-label {
+  font-size: 16px;
+  color: #191919;
+}
+.page-profile-real .row-arrow {
+  color: #b3b3b3;
+  font-size: 18px;
+}
+.page-profile-real .action-card {
+  background: #ffffff;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.page-profile-real .action-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #576b95;
+  cursor: pointer;
+  background: #ffffff;
+}
+.page-profile-real .action-btn:active {
+  background: #ececec;
+}
+.page-profile-real .border-bottom {
+  border-bottom: 0.5px solid #e5e5e5;
+}
+.page-profile-real .action-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  object-fit: contain;
+  color: #576b95;
+}
+.page-profile-real .flaw-row {
+  cursor: pointer;
+}
+.page-profile-real .flaw-exposed::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 2.5px solid #ff4d4f;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100;
+  animation: pop-flaw-pr 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes pop-flaw-pr {
+  0% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============ FakeMoments（假冒朋友圈） ============ */
+.page-fake-moments {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-fake-moments .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+.page-fake-moments .wechat-header-left {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.page-fake-moments .header-icon {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.page-fake-moments .icon-back {
+  width: 15px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+.page-fake-moments .moments-cover {
+  height: 300px;
+  width: 100%;
+  background: linear-gradient(#4a4a4a, #2b2b2b);
+}
+.page-fake-moments .moments-user {
+  position: absolute;
+  top: 260px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+}
+.page-fake-moments .m-name {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 15px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+.page-fake-moments .m-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: none;
+}
+.page-fake-moments .moments-body {
+  padding: 0;
+  margin-top: 50px;
+}
+.page-fake-moments .year {
+  padding: 20px 15px 10px;
+  font-size: 20px;
+  color: #1a1a1a;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.page-fake-moments .post-group {
+  display: flex;
+  padding: 20px 15px;
+}
+.page-fake-moments .post-date {
+  width: 60px;
+  text-align: right;
+  margin-right: 20px;
+  padding-top: 5px;
+}
+.page-fake-moments .post-date .day {
+  font-size: 20px;
+  color: #1a1a1a;
+  font-weight: bold;
+}
+.page-fake-moments .post-date .month {
+  font-size: 14px;
+  color: #1a1a1a;
+}
+.page-fake-moments .post-card {
+  flex: 1;
+  background: #f7f7f7;
+  border-radius: 4px;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+.page-fake-moments .post-text-content {
+  flex: 1;
+}
+.page-fake-moments .post-title {
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+.page-fake-moments .highlight-link {
+  color: #576b95;
+  word-break: break-all;
+}
+.page-fake-moments .p-time {
+  font-size: 13px;
+  color: #999;
+  margin-top: 5px;
+}
+.page-fake-moments .comment-placeholder {
+  height: 10px;
+}
+.page-fake-moments .flaw-row {
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
+}
+.page-fake-moments .flaw-exposed::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border: 2.5px solid #ff4d4f;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100;
+  box-sizing: border-box;
+  animation: pop-flaw-fm 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes pop-flaw-fm {
+  0% {
+    transform: scale(1.02);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============ GroupDetail（群信息页） ============ */
+.page-group-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+}
+.page-group-detail .wechat-header {
+  height: 50px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  flex-shrink: 0;
+}
+.page-group-detail .header-left,
+.page-group-detail .header-right {
+  width: 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.page-group-detail .header-right {
+  justify-content: flex-end;
+}
+.page-group-detail .header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 500;
+  color: #191919;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-group-detail .svg-icon {
+  display: inline-block;
+}
+.page-group-detail .icon-back {
+  width: 18px;
+  height: auto;
+}
+.page-group-detail .icon-search {
+  width: 22px;
+  height: auto;
+  border-radius: 50%;
+  background: transparent;
+  filter: invert(100%);
+}
+.page-group-detail .icon-mute-bell {
+  width: 14px;
+  height: 14px;
+  margin-left: 6px;
+  background: #b2b2b2;
+}
+.page-group-detail .icon-qrcode {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+.page-group-detail .page-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.page-group-detail .section {
+  background: #ffffff;
+  margin-bottom: 8px;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+.page-group-detail .section:first-child {
+  border-top: none;
+}
+.page-group-detail .members-section {
+  padding: 15px 15px 0 15px;
+}
+.page-group-detail .members-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 15px;
+}
+.page-group-detail .member-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.page-group-detail .member-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  background-size: cover;
+  background-position: center;
+}
+.page-group-detail .placeholder-avatar {
+  background-color: #e6e6e6;
+}
+.page-group-detail .member-name {
+  font-size: 11px;
+  color: #888888;
+  width: 50px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-group-detail .add-btn {
+  border: 1px dashed #cccccc;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-group-detail .add-icon {
+  width: 20px;
+  height: 2px;
+  background: #b2b2b2;
+  position: relative;
+}
+.page-group-detail .add-icon::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: #b2b2b2;
+  top: -9px;
+  left: 9px;
+}
+.page-group-detail .more-members-btn {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #888888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-group-detail .arrow-down {
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid #b2b2b2;
+  border-bottom: 1.5px solid #b2b2b2;
+  transform: rotate(45deg);
+  margin-left: 6px;
+  margin-top: -4px;
+}
+.page-group-detail .list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin: 0 16px;
+  border-bottom: 0.5px solid #f2f2f2;
+}
+.page-group-detail .no-border {
+  border-bottom: none;
+}
+.page-group-detail .item-label {
+  font-size: 16px;
+  color: #191919;
+  white-space: nowrap;
+}
+.page-group-detail .item-value-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+.page-group-detail .item-value {
+  font-size: 15px;
+  color: #8c8c8c;
+  margin-right: 8px;
+}
+.page-group-detail .truncate-text {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.page-group-detail .notice-item {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 0;
+}
+.page-group-detail .notice-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.page-group-detail .notice-content {
+  font-size: 14px;
+  color: #888888;
+  line-height: 1.5;
+  width: 100%;
+}
+.page-group-detail .truncate-text-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.page-group-detail .double-line-item {
+  align-items: flex-start;
+}
+.page-group-detail .item-text-col {
+  display: flex;
+  flex-direction: column;
+}
+.page-group-detail .item-sub-label {
+  font-size: 13px;
+  color: #b2b2b2;
+  margin-top: 4px;
+}
+.page-group-detail .arrow-right {
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid #b2b2b2;
+  border-right: 1.5px solid #b2b2b2;
+  transform: rotate(45deg);
+}
+.page-group-detail .ios-switch {
+  width: 32px;
+  height: 20px;
+  border-radius: 10px;
+  background: #e5e5e5;
+  position: relative;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+.page-group-detail .ios-switch::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
+}
+.page-group-detail .ios-switch.active::after {
+  transform: translateX(13px);
+}
+.page-group-detail .ios-switch.active {
+  background: #07c160;
+}
+.page-group-detail .action-section {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+.page-group-detail .danger-btn {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e64340;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.page-group-detail .danger-btn:active {
+  background: #ececec;
+}
+.page-group-detail .bottom-spacer {
+  height: 40px;
+}
+
+/* ============ GroupSearch（群搜索页） ============ */
+.page-group-search {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f2f2f2;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page-group-search .search-header {
+  background: #ededed;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+.page-group-search .search-bar-wrap {
+  flex: 1;
+  background: #fff;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  margin-right: 15px;
+}
+.page-group-search .search-icon {
+  font-size: 16px;
+  color: #b2b2b2;
+  margin-right: 6px;
+  width: 19px;
+}
+.page-group-search .search-input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  background: transparent;
+}
+.page-group-search .search-back {
+  color: #576b95;
+  font-size: 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.page-group-search .search-list {
+  background: #fff;
+}
+.page-group-search .search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+.page-group-search .search-result-item:active {
+  background: #ececec;
+}
+.page-group-search .search-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.page-group-search .search-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 0;
+  border-bottom: 0.5px solid #e5e5e5;
+}
+.page-group-search .search-result-item:last-child .search-info {
+  border-bottom: none;
+}
+.page-group-search .s-name {
+  font-size: 16px;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+.page-group-search .s-sub {
+  font-size: 13px;
+  color: #999;
+  margin-top: 2px;
+}
+.page-group-search .highlight {
+  color: #07c160;
+}
+.page-group-search .flaw-row {
+  border-radius: 4px;
+}
+.page-group-search .flaw-exposed::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 2.5px solid #ff4d4f;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100;
+  animation: pop-flaw-gs 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+@keyframes pop-flaw-gs {
+  0% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

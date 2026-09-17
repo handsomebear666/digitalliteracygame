@@ -1,0 +1,401 @@
+/* ============================================
+   主页地图样式
+   对应 HomeView.vue / TheHeader.vue / IslandNode.vue / MapDecoration.vue
+   ============================================ */
+
+/* ---------- TheHeader ---------- */
+header {
+  background-color: transparent;
+  padding: 40px 20px 20px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo-title h1 {
+  margin: 0;
+  font-size: 36px;
+  color: #00796b;
+  font-weight: 900;
+}
+
+.logo-title span.icon {
+  margin-right: 12px;
+  font-size: 36px;
+}
+
+/* 标语卡片 */
+.slogan-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 15px 25px;
+  box-shadow: 0 8px 24px rgba(0, 121, 107, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  max-width: 400px;
+}
+
+.slogan-card p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #00695c;
+  line-height: 1.5;
+}
+
+.slogan-card strong {
+  color: #ff8f00;
+  font-size: 16px;
+  font-weight: bold;
+}
+.title-img {
+  height: auto;
+  width: 90%;
+  max-height: 100px;
+  vertical-align: middle;
+}
+
+/* ---------- HomeView ---------- */
+.app-wrapper {
+  min-height: 100vh;
+}
+.map-container {
+  max-width: 1000px;
+  margin: 20px auto 60px auto;
+  padding: 20px;
+  position: relative;
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="rgba(0,121,107,0.5)" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>'),
+    auto;
+}
+
+/* ---------- IslandNode ---------- */
+.island-node {
+  display: flex;
+  align-items: center;
+  margin-bottom: 80px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.island-node:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.island-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  width: 350px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 4px solid #fff;
+}
+.island-number {
+  position: absolute;
+  top: -20px;
+  background-color: #ffd54f;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.island-node:nth-child(odd) .island-number {
+  left: -20px;
+}
+.island-node:nth-child(even) .island-number {
+  right: -20px;
+}
+
+/* 支持图片图标和标题的样式 */
+.island-icon-img {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.island-icon-img img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+.island-icon {
+  font-size: 40px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.island-title-img {
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.island-title-img img {
+  max-height: 200px;
+  width: auto;
+  object-fit: contain;
+}
+.island-card h3 {
+  margin: 0 0 10px 0;
+  color: #00796b;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* 元信息：时长、难度各占一行，整体居中 */
+.island-card .meta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px 0;
+}
+
+.island-card p.meta {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}
+
+/* 难度：暖金胶囊标签，与星星呼应，文字与星星垂直居中 */
+.island-card p.meta-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fffaf1 0%, #fdf0dc 100%);
+  border: 1px solid #f3e2c4;
+  color: #c07a12;
+}
+
+.island-card .meta-level .meta-label {
+  letter-spacing: 1px;
+}
+
+.island-card .meta-level .meta-stars {
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+/* 简介：文字居中，且 white-space 保证换行符生效 */
+.island-card p.desc {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.tag-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+.tag {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.tag-color-1 {
+  background-color: #e1f5fe;
+  color: #0277bd;
+}
+.tag-color-2 {
+  background-color: #f1f8e9;
+  color: #558b2f;
+}
+.tag-color-3 {
+  background-color: #fffde7;
+  color: #f9a825;
+}
+.tag-color-4 {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.start-btn,
+.card-btn {
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.2s;
+  text-align: center;
+  box-sizing: border-box;
+}
+.start-btn {
+  background-color: #4db6ac;
+}
+.start-btn:hover {
+  background-color: #00897b;
+}
+.card-btn {
+  background-color: #ffb300;
+}
+.card-btn:hover {
+  background-color: #ff8f00;
+}
+
+/* 敬请期待的单按钮样式 */
+.button-group.single-btn {
+  justify-content: center;
+}
+.locked-only-btn {
+  background-color: #b0bec5 !important;
+  cursor: not-allowed !important;
+  width: 100%;
+  flex: none;
+}
+
+.island-node.active .island-card {
+  border-color: #4db6ac;
+  cursor: pointer;
+}
+.island-node.active .island-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 121, 107, 0.15);
+}
+.island-node.locked {
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+.island-node.locked .island-card {
+  background-color: #f5f5f5;
+  border-color: #e0e0e0;
+}
+.island-node.locked .start-btn,
+.island-node.locked .card-btn {
+  background-color: #b0bec5;
+}
+
+.island-node.completed .island-card::after {
+  content: "✅ 已通关";
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(76, 175, 80, 0.9);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ---------- MapDecoration ---------- */
+.map-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.roadmap-path {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: calc(100% - 100px);
+  border-left: 4px dashed #81d4fa;
+}
+
+/* fixed 让气泡固定在手机屏幕，无视网页长度 */
+.bubble-group {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(77, 182, 172, 0.1) 100%
+  );
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+  bottom: -150px;
+}
+
+@keyframes floatBubble {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-60vh) translateX(20px);
+  }
+  100% {
+    transform: translateY(-120vh) translateX(-10px);
+  }
+}
+
+.bubble-1 {
+  width: 120px;
+  height: 120px;
+  left: 15%;
+  animation: floatBubble 25s infinite linear -6s;
+}
+.bubble-2 {
+  width: 80px;
+  height: 80px;
+  right: 20%;
+  animation: floatBubble 28s infinite linear -12s;
+  opacity: 0.5;
+}
+.bubble-3 {
+  width: 100px;
+  height: 100px;
+  left: 45%;
+  animation: floatBubble 22s infinite linear -13s;
+}
+.bubble-4 {
+  width: 90px;
+  height: 90px;
+  right: 35%;
+  animation: floatBubble 30s infinite linear -8s;
+  opacity: 0.7;
+}
